@@ -205,14 +205,36 @@ apparmor=1 lsm=lockdown,yama,integrity,apparmor
 
 ---
 
-## 9. 未完成 / 已知问题
+## 9. 相机适配（进行中，已推进到 vendor HAL）
 
-1. **相机**：DSP 固件、`qrtr-ns`、provider 注册（`ICameraProvider/legacy/0`）都已修好，
-   但本 Halium 12/13 GSI **没有 `/system/bin/cameraserver`**，只有 `camera_service`
-   （仅启动 MediaRecorderFactory / CameraRecordService），而 UT 20.04 的相机客户端
-   等的是 legacy 的 `media.camera`。GSI 的 `libcameraservice.so` 只提供 AIDL 接口
-   （`cameraservice.service.V2_2`），因此**无法直接编译一个 legacy cameraserver**。
-   路线：换 Halium 11 GSI / 等 UT 24.04 图形问题解决 / 自写桥接。
+相机链路在 Halium 上要经过：`camera app → libhybris → media.camera(CameraService) →
+ICameraProvider(2.4 legacy) → CamX → /dev/video*、/dev/v4l-subdev*`。
+
+本工程已修好的环节（`runtime/etc/umi-*.sh` + `umi-camera-fix.service`）：
+
+| 环节 | 问题 | 修复 |
+|---|---|---|
+| DSP | adsp/cdsp 从未启动（固件路径 + 未触发） | `umi-dsp-init.sh`：合并 `/vendor/firmware_mnt/image` 到 `/vendor/firmware` 并写 `boot_adsp/boot_cdsp` |
+| QMI 服务发现 | `qrtr-lookup` 为空，provider 卡在 `qrtr_recvmsg` | `umi-start-rpc.sh`：启动 `qrtr-ns`、`adsprpcd`、`cdsprpcd` |
+| camera provider | 注册成功（`ICameraProvider/legacy/0`） | 由上面两项带出 |
+| `media.camera` 缺失 | `minimediaservice` 死等 `android.hardware.media.c2@1.0::IComponentStore/software`，永远走不到注册 CameraService | `umi-camera-fix.sh`：启动 `/apex/com.android.media.swcodec/bin/mediaswcodec` |
+| 相机权限 | minimedia 把 CameraService 的允许用户写死为 `{0,1}`（root/bin），app 以 phablet(32011) 运行被拒 | `umi-camera-fix.sh`：二进制补丁把立即数改成 `{0,32011}`（`0x145d8: movz x8,#0x7d0b,lsl#32`），bind-mount 后重启 minimedia |
+
+**当前进度**：`CameraService::connect` 已能成功进入（权限不再被拒），
+但 vendor **CamX 初始化 session 失败**：
+
+```
+CameraService::connect call (PID -1 "hybris", camera ID 0) and Camera API version 1
+connectHelper: Could not initialize client from HAL.
+CamX: CSLHwInternalDefaultOpen() Open failed for /dev/v4l-subdev28 (Permission denied)
+CameraService: 相机 app 显示「无法访问相机」
+```
+
+已排除：文件权限（改 0666 无效）、AppArmor（unconfined）、设备 cgroup（root 在容器内可打开）。
+剩余怀疑：vendor CamX 需要的 **`/data/vendor/camera/` 出厂标定数据**（dcal、remosaic crosstalk 等）
+在刷机清空 userdata 后丢失，以及 CamX 的 CHI 静态配置项缺失
+（`Failed to find ANDROID_REQUEST_AVAILABLE_REQUEST_KEYS entry`）。
+
 2. **冷启动偶发二次重启**：第一次启动可能未成，设备会自己重启一次，第二轮稳定。
 3. **其他外设**（摄像头以外）未系统验证：音频、传感器、振动、WiFi、通话。
 

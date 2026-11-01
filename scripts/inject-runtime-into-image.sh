@@ -43,13 +43,14 @@ put "$RT/etc/umi-patch-and-bind.sh"  /etc/umi-patch-and-bind.sh  0755
 put "$RT/etc/umi-start-vsm.sh"       /etc/umi-start-vsm.sh       0755
 put "$RT/etc/umi-dsp-init.sh"        /etc/umi-dsp-init.sh        0755
 put "$RT/etc/umi-start-rpc.sh"       /etc/umi-start-rpc.sh       0755
+put "$RT/etc/umi-camera-fix.sh"      /etc/umi-camera-fix.sh      0755
 
 echo "==> hybris 环境变量"
 put "$RT/etc/default/lsc-wrapper.d/50-umi-hybris.conf" \
     /etc/default/lsc-wrapper.d/50-umi-hybris.conf 0644
 
 echo "==> systemd 单元"
-for u in umi-vsm-patch umi-vsm-start umi-dsp-init umi-start-rpc; do
+for u in umi-vsm-patch umi-vsm-start umi-dsp-init umi-start-rpc umi-camera-fix; do
     put "$RT/etc/systemd/system/$u.service" "/etc/systemd/system/$u.service" 0644
 done
 
@@ -73,6 +74,7 @@ run "symlink /etc/systemd/system/sysinit.target.wants/umi-dsp-init.service /etc/
 run "symlink /etc/systemd/system/sysinit.target.wants/umi-vsm-patch.service /etc/systemd/system/umi-vsm-patch.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/umi-vsm-start.service /etc/systemd/system/umi-vsm-start.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/umi-start-rpc.service /etc/systemd/system/umi-start-rpc.service"
+run "symlink /etc/systemd/system/multi-user.target.wants/umi-camera-fix.service /etc/systemd/system/umi-camera-fix.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/early-debug-ssh.service /etc/systemd/system/early-debug-ssh.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/debug-http.service /etc/systemd/system/debug-http.service"
 

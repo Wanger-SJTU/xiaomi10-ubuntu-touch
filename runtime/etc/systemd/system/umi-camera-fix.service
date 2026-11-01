@@ -1,0 +1,12 @@
+[Unit]
+Description=umi: camera bring-up (codec2 software store + camera allowed users)
+After=lxc-android-config.service
+Wants=lxc-android-config.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/umi-camera-fix.sh
+
+[Install]
+WantedBy=multi-user.target
