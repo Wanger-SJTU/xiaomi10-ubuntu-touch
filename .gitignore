@@ -1,0 +1,23 @@
+# 构建产物与下载缓存（体积大，不入库）
+out/
+out20/
+workdir/
+work/
+kernel/
+kernel-toolchain/
+vndk/
+ref/
+refs/
+logs/
+dtb/
+ota/
+ota20/
+*.tar.xz
+*.tar.gz
+*.img
+!artifacts/*.tar.xz
+*.patch.orig
+*.rej
+*.log
+core.*
+.DS_Store

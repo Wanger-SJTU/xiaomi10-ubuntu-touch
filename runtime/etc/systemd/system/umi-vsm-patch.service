@@ -1,0 +1,13 @@
+[Unit]
+Description=umi: bind patched vndservicemanager into the Android container
+DefaultDependencies=no
+After=local-fs.target mount-halium-overlay.service mount-android-partitions.service mount-android-system.service
+Before=lxc-android-config.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/umi-patch-and-bind.sh
+
+[Install]
+WantedBy=sysinit.target

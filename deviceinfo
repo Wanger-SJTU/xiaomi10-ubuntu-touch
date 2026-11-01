@@ -1,0 +1,60 @@
+# Ubuntu Touch port — Xiaomi Mi 10 (umi), Halium 12
+# 基于 apollo (Mi 10T, 同 SM8250) 的 Halium 12 移植范式改编
+# 参考: /tmp/apollo/deviceinfo, LineageOS android_device_xiaomi_umi + sm8250-common (lineage-23.2)
+deviceinfo_name="Mi 10"
+deviceinfo_manufacturer="Xiaomi"
+deviceinfo_codename="umi"
+deviceinfo_arch="aarch64"
+# deviceinfo_kernel_arch 未设置：构建工具会从 arch 推导
+
+# Halium 12 = Android 12 厂商底包（本机现为 MIUI 13 / Android 12, V130 22.1.19 CN）
+deviceinfo_halium_version="12"
+deviceinfo_ubuntu_touch_release="24.04-2.x"
+
+# ---------- 内核 ----------
+# 内核树由 kernel-builder 准备（LineageOS android_kernel_xiaomi_sm8250 lineage-23.2 + apollo 补丁系列 + umi 配置）
+deviceinfo_kernel_source="file:///home/wanger/mi10/port/kernel"
+deviceinfo_kernel_source_branch="halium-23.2"
+deviceinfo_kernel_defconfig="vendor/kona-perf_defconfig vendor/debugfs.config vendor/xiaomi/sm8250-common.config vendor/xiaomi/umi.config halium.config"
+deviceinfo_kernel_clang_compile="true"
+deviceinfo_kernel_llvm_compile="true"          # LOS: TARGET_KERNEL_NO_GCC, LTO/CFI/SCS
+deviceinfo_kernel_use_lld="true"
+deviceinfo_kernel_clang_branch="main-kernel-build-2024"
+deviceinfo_kernel_clang_revision="r510928"
+deviceinfo_kernel_disable_modules="false"      # true 会破坏 overlaystore 步骤
+deviceinfo_kernel_use_dtc_ext="false"
+deviceinfo_kernel_image_name="Image"
+
+# LOS sm8250-common 的 BOARD_KERNEL_CMDLINE + UT 追加项
+# 注意: header v2 的 cmdline 字段只有 512 字节，小米 ABL 会忽略 extra_cmdline -> 必须 < 512 且 systempart 放最前
+deviceinfo_kernel_cmdline="systempart=/dev/mapper/system console=tty0 fsck.mode=skip fsck.repair=no androidboot.hardware=qcom androidboot.memcg=1 lpm_levels.sleep_disabled=1 msm_rtb.filter=0x237 service_locator.enable=1 androidboot.usbcontroller=a600000.dwc3 swiotlb=2048 loop.max_part=7 cgroup.memory=nokmem,nosocket reboot=panic_warm androidboot.fstab_suffix=qcom apparmor=1 lsm=lockdown,yama,integrity,apparmor firmware_class.path=/vendor/firmware printk.devkmsg=on"
+
+# ---------- boot.img（数值来自 LOS umi 20261025 boot.img 实测解包）----------
+deviceinfo_bootimg_header_version="2"
+deviceinfo_flash_pagesize="4096"
+deviceinfo_flash_offset_base="0x00000000"
+deviceinfo_flash_offset_kernel="0x00008000"
+deviceinfo_flash_offset_ramdisk="0x01000000"
+deviceinfo_flash_offset_second="0x00000000"
+deviceinfo_flash_offset_tags="0x00000100"
+deviceinfo_flash_offset_dtb="0x01f00000"
+deviceinfo_bootimg_os_version="12"
+deviceinfo_bootimg_os_patch_level="2022-01-01"    # 本机 MIUI13 22.1.19 安全补丁级别
+deviceinfo_bootimg_partition_size="134217728"     # BOARD_BOOTIMAGE_PARTITION_SIZE = 128 MiB
+# 从 LOS umi 20261025 boot.img 提取（与内核同源），避免 dtc 生成差异
+deviceinfo_bootimg_prebuilt_dtb="lineage-umi.dtb"
+deviceinfo_skip_dtbo_partition="true"             # 绝不改动原厂 dtbo（ABL 依赖其 overlay）
+
+# ---------- ramdisk / recovery ----------
+# 使用注入了 zz-debug-inject 的 initrd（v5 调试通道）
+deviceinfo_prebuilt_boot_ramdisk="halium-boot-ramdisk-debug.img"
+# 如需回到官方 initrd：注释上面这行即可
+# umi 有独立 recovery 分区，但移植阶段用官方 TWRP 3.7.1_12 单独刷，构建不产出 recovery.img
+deviceinfo_ramdisk_compression="gzip"
+deviceinfo_has_recovery_partition="false"
+deviceinfo_use_unified_recovery="false"
+
+# ---------- rootfs ----------
+deviceinfo_rootfs_image_sector_size="4096"
+deviceinfo_system_partition_size="5120M"          # super 9.1 GiB 中给 UT system 的分区
+deviceinfo_use_overlaystore="true"

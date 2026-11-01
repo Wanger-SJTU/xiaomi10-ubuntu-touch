@@ -1,0 +1,38 @@
+From 12942f7a5403c41931ede2650818912a62533236 Mon Sep 17 00:00:00 2001
+From: Hassan <hafizhassanlatif@gmail.com>
+Date: Sat, 10 Oct 2026 16:44:38 +0500
+Subject: [PATCH 05/15] input: touchscreen: nt36672c: re-apply edge filter
+ level after resume
+
+The touch firmware is re-downloaded on every resume, which resets the
+edge (grip) filter level. On Ubuntu Touch there is no MIUI touch HAL to
+set it again, so re-send the last value set through /dev/xiaomi-touch.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ drivers/input/touchscreen/nt36672c/nt36xxx.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/drivers/input/touchscreen/nt36672c/nt36xxx.c b/drivers/input/touchscreen/nt36672c/nt36xxx.c
+index 7cf0cdd67..29123347d 100644
+--- a/drivers/input/touchscreen/nt36672c/nt36xxx.c
++++ b/drivers/input/touchscreen/nt36672c/nt36xxx.c
+@@ -3323,6 +3323,15 @@ static int32_t nvt_ts_resume(struct device *dev)
+ 	}
+ 	/* check usb status */
+ 	queue_work(ts->event_wq, &ts->power_supply_work);
++#ifdef CONFIG_TOUCHSCREEN_XIAOMI_TOUCHFEATURE
++	/*
++	 * The firmware was reloaded above, which drops the edge filter level
++	 * set from userspace (no MIUI touch HAL re-applies it on Linux).
++	 */
++	if (xiaomi_touch_interfaces.touch_mode[Touch_Edge_Filter][GET_CUR_VALUE])
++		nvt_set_cur_value(Touch_Edge_Filter,
++			xiaomi_touch_interfaces.touch_mode[Touch_Edge_Filter][GET_CUR_VALUE]);
++#endif
+ Exit:
+ 	if (ts->dev_pm_suspend)
+ 		pm_relax(dev);
+-- 
+2.34.1
+

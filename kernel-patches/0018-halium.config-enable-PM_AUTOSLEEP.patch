@@ -1,0 +1,42 @@
+From 7b9e5ae04caa90f0440a177fa0bc31cf6c0ae668 Mon Sep 17 00:00:00 2001
+From: Hassan <hafizhassanlatif@gmail.com>
+Date: Sun, 11 Oct 2026 13:51:36 +0500
+Subject: [PATCH] halium.config: enable PM_AUTOSLEEP
+
+Ubuntu Touch suspends through libsuspend's autosleep backend
+(/sys/power/autosleep); without it repowerd fell back to logind and the
+phone never suspended (suspend_stats success 0 after 10 h idle).
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ arch/arm64/configs/halium.config                  | 1 +
+ arch/arm64/configs/vendor/halium_apollo_defconfig | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/arch/arm64/configs/halium.config b/arch/arm64/configs/halium.config
+index 0c35127a8..a5b5ba6f7 100644
+--- a/arch/arm64/configs/halium.config
++++ b/arch/arm64/configs/halium.config
+@@ -74,6 +74,7 @@ CONFIG_NETFILTER_XT_TARGET_TCPOPTSTRIP=y
+ CONFIG_NETLABEL=y
+ CONFIG_NF_CONNTRACK_ZONES=y
+ CONFIG_PID_NS=y
++CONFIG_PM_AUTOSLEEP=y
+ CONFIG_SECURITYFS=y
+ CONFIG_SECURITY_APPARMOR=y
+ # CONFIG_SECURITY_APPARMOR_DEBUG is not set
+diff --git a/arch/arm64/configs/vendor/halium_apollo_defconfig b/arch/arm64/configs/vendor/halium_apollo_defconfig
+index dddb0bbed..bfd36f7fd 100644
+--- a/arch/arm64/configs/vendor/halium_apollo_defconfig
++++ b/arch/arm64/configs/vendor/halium_apollo_defconfig
+@@ -69,6 +69,7 @@ CONFIG_BUILD_ARM64_UNCOMPRESSED_KERNEL=y
+ CONFIG_KRYO_PMU_WORKAROUND=y
+ CONFIG_BUILD_ARM64_DT_OVERLAY=y
+ CONFIG_COMPAT=y
++CONFIG_PM_AUTOSLEEP=y
+ CONFIG_PM_WAKELOCKS=y
+ CONFIG_PM_WAKELOCKS_LIMIT=0
+ # CONFIG_PM_WAKELOCKS_GC is not set
+-- 
+2.34.1
+

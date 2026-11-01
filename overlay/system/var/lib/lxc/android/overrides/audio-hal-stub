@@ -1,0 +1,8 @@
+#!/system/bin/sh
+# Mi 10 / Ubuntu Touch: the audio HAL runs inside pulseaudio (pulseaudio-modules-droid).
+# A second instance in the Android container (vendor.audio-hal) registers ACDB calibration
+# blocks with its own fds first, which breaks the calibration of the pulseaudio instance
+# (msm_audio_ion_import: dma_buf_get on a foreign fd) -> no voice uplink, low volume.
+# MIUI's init.qcom.rc defines vendor.audio-hal before Halium's init.disabled.rc can, so the
+# binary itself is replaced by this idle stub.
+while true; do sleep 86400; done

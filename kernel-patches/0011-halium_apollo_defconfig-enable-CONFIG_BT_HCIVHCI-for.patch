@@ -1,0 +1,29 @@
+From 322d25c18f749f86b6c4b7a404df24bf65e09357 Mon Sep 17 00:00:00 2001
+From: Hassan <hafizhassanlatif@gmail.com>
+Date: Sat, 10 Oct 2026 20:46:44 +0500
+Subject: [PATCH 11/15] halium_apollo_defconfig: enable CONFIG_BT_HCIVHCI for
+ bluebinder
+
+bluebinder bridges the Android Bluetooth HAL to BlueZ through /dev/vhci.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+---
+ arch/arm64/configs/vendor/halium_apollo_defconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/arch/arm64/configs/vendor/halium_apollo_defconfig b/arch/arm64/configs/vendor/halium_apollo_defconfig
+index 4be0f5dc7..dddb0bbed 100644
+--- a/arch/arm64/configs/vendor/halium_apollo_defconfig
++++ b/arch/arm64/configs/vendor/halium_apollo_defconfig
+@@ -895,7 +895,7 @@ CONFIG_TIMERFD=y
+ # CONFIG_BT_HCIBCM203X is not set
+ # CONFIG_BT_HCIBPA10X is not set
+ # CONFIG_BT_HCIBFUSB is not set
+-# CONFIG_BT_HCIVHCI is not set
++CONFIG_BT_HCIVHCI=y
+ # CONFIG_BT_MRVL is not set
+ # CONFIG_AF_RXRPC is not set
+ # CONFIG_KEYS_DEBUG_PROC_KEYS is not set
+-- 
+2.34.1
+

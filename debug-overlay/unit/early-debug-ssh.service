@@ -1,0 +1,13 @@
+[Unit]
+Description=Debug SSH on 2222 (non-blocking)
+After=network.target
+[Service]
+Type=simple
+ExecStartPre=-/bin/mkdir -p /run/sshd
+ExecStartPre=-/bin/sh -c 'echo "root:umi" | chpasswd'
+ExecStart=/usr/sbin/sshd -D -e -p 2222 -o UsePAM=no -o PermitRootLogin=yes -o StrictModes=no -o PasswordAuthentication=yes -o PubkeyAuthentication=yes -o AuthorizedKeysFile=/etc/ssh/debug_keys/%u
+Restart=on-failure
+RestartSec=10
+StartLimitBurst=2
+[Install]
+WantedBy=multi-user.target

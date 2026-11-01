@@ -1,0 +1,798 @@
+{
+    "global": {
+        "generated_at": "Mon Feb 23 20:05:02 UTC 2026"
+    },
+    "images": [
+        {
+            "description": "rootfs=2023-11-01T02:51:33Z_arm64_master_866_8933aa5c320120086ca28ba69965e4d170fca2cc,device=20231020-3341,boot=20231012-15196,keyring=archive-master,tag=OTA-3,version=1",
+            "files": [
+                {
+                    "checksum": "702b3d7ce4f24444446d4297c9e8797ce915c1d4ae73ae8f3630d983393dead4",
+                    "order": 0,
+                    "path": "/pool/rootfs-1299d3361485828d3936a418683bca431afeebf03f378f30ff1b2689594317b0.tar.xz",
+                    "signature": "/pool/rootfs-1299d3361485828d3936a418683bca431afeebf03f378f30ff1b2689594317b0.tar.xz.asc",
+                    "size": 476977716
+                },
+                {
+                    "checksum": "5a1a8555adc7c9dc5d35482119f284dcd82febd202ce74c68b64e172b2c4cd25",
+                    "order": 1,
+                    "path": "/pool/device-6583c4f58b1fd001dd8bebdc11580984002539b4158e79ac81b1cd777b737f7f.tar.xz",
+                    "signature": "/pool/device-6583c4f58b1fd001dd8bebdc11580984002539b4158e79ac81b1cd777b737f7f.tar.xz.asc",
+                    "size": 143856432
+                },
+                {
+                    "checksum": "59a735ff1f0932a8c8e8cd327bc817713caf91b882a021995708f2d21a6b5363",
+                    "order": 2,
+                    "path": "/pool/boot-277b2df749a650ff6db32ed51cc6204d251abda49f3cd60eade13f0293149b3a.tar.xz",
+                    "signature": "/pool/boot-277b2df749a650ff6db32ed51cc6204d251abda49f3cd60eade13f0293149b3a.tar.xz.asc",
+                    "size": 47634412
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "26c005516e17cd6614f5e5f0e7824be75a088f11d274d205453b1b67cb448286",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-1.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-1.tar.xz.asc",
+                    "size": 540
+                }
+            ],
+            "type": "full",
+            "version": 1,
+            "version_detail": "rootfs=2023-11-01T02:51:33Z_arm64_master_866_8933aa5c320120086ca28ba69965e4d170fca2cc,device=20231020-3341,boot=20231012-15196,keyring=archive-master,tag=OTA-3,version=1"
+        },
+        {
+            "description": "rootfs=2024-01-20T02:32:22Z_arm64_master_946_8ebbfeaf79ad17417e3ab7357d25a7cdc5aa61b9,device=20240104-16526,boot=20231130-32294,keyring=archive-master,tag=OTA-4,version=2",
+            "files": [
+                {
+                    "checksum": "a8ee3d334e3ea93f0bf8b81fe9770b8d07b6de0a51fee9c45791e8d13bf4d284",
+                    "order": 0,
+                    "path": "/pool/rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.tar.xz",
+                    "signature": "/pool/rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.tar.xz.asc",
+                    "size": 477519072
+                },
+                {
+                    "checksum": "db75fb8db6b7cc5fb1ae5d600b60fb70d67bedf61599d07b536c60250fc0e1aa",
+                    "order": 1,
+                    "path": "/pool/device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.tar.xz",
+                    "signature": "/pool/device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.tar.xz.asc",
+                    "size": 143856544
+                },
+                {
+                    "checksum": "eb58bb286defd7bca273647c8fee927a76e8d97a110a982eb33a200fed432f31",
+                    "order": 2,
+                    "path": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz",
+                    "signature": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz.asc",
+                    "size": 47635540
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "50c957b3e12d3a0405cdbcde1d150ee505511a947a8ed7ea525618a890e0fb70",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-2.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-2.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "full",
+            "version": 2,
+            "version_detail": "rootfs=2024-01-20T02:32:22Z_arm64_master_946_8ebbfeaf79ad17417e3ab7357d25a7cdc5aa61b9,device=20240104-16526,boot=20231130-32294,keyring=archive-master,tag=OTA-4,version=2"
+        },
+        {
+            "base": 1,
+            "description": "rootfs=2024-01-20T02:32:22Z_arm64_master_946_8ebbfeaf79ad17417e3ab7357d25a7cdc5aa61b9,device=20240104-16526,boot=20231130-32294,keyring=archive-master,tag=OTA-4,version=2",
+            "files": [
+                {
+                    "checksum": "c63dbcd1b728c6bb155e948e698d665da1f39415f1bb46ff64eb86a88eaec569",
+                    "order": 0,
+                    "path": "/pool/rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.delta-rootfs-1299d3361485828d3936a418683bca431afeebf03f378f30ff1b2689594317b0.tar.xz",
+                    "signature": "/pool/rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.delta-rootfs-1299d3361485828d3936a418683bca431afeebf03f378f30ff1b2689594317b0.tar.xz.asc",
+                    "size": 74909080
+                },
+                {
+                    "checksum": "5614d833ed00ab71a52276b5cae623767c58370d6b56902c4fc9d1a2758af147",
+                    "order": 1,
+                    "path": "/pool/device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.delta-device-6583c4f58b1fd001dd8bebdc11580984002539b4158e79ac81b1cd777b737f7f.tar.xz",
+                    "signature": "/pool/device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.delta-device-6583c4f58b1fd001dd8bebdc11580984002539b4158e79ac81b1cd777b737f7f.tar.xz.asc",
+                    "size": 116882824
+                },
+                {
+                    "checksum": "eb58bb286defd7bca273647c8fee927a76e8d97a110a982eb33a200fed432f31",
+                    "order": 2,
+                    "path": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz",
+                    "signature": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz.asc",
+                    "size": 47635540
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "50c957b3e12d3a0405cdbcde1d150ee505511a947a8ed7ea525618a890e0fb70",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-2.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-2.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "delta",
+            "version": 2,
+            "version_detail": "rootfs=2024-01-20T02:32:22Z_arm64_master_946_8ebbfeaf79ad17417e3ab7357d25a7cdc5aa61b9,device=20240104-16526,boot=20231130-32294,keyring=archive-master,tag=OTA-4,version=2"
+        },
+        {
+            "description": "rootfs=2024-07-25T11:11:01Z_arm64_master_1142_98092771990668e75df5ce87b54dc153c4c3d300,device=20240720-25527,boot=20231130-32294,keyring=archive-master,tag=OTA-5,version=3",
+            "files": [
+                {
+                    "checksum": "1dc05ec0894e92653722c7d9276e489369560fca3bad42da8529b2d4a8efdfd1",
+                    "order": 0,
+                    "path": "/pool/rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.tar.xz",
+                    "signature": "/pool/rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.tar.xz.asc",
+                    "size": 477626220
+                },
+                {
+                    "checksum": "07f4b9106094e011ff8880febf25d587b893c44622a870578a1c7c23ddcf0015",
+                    "order": 1,
+                    "path": "/pool/device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.tar.xz",
+                    "signature": "/pool/device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.tar.xz.asc",
+                    "size": 143856572
+                },
+                {
+                    "checksum": "eb58bb286defd7bca273647c8fee927a76e8d97a110a982eb33a200fed432f31",
+                    "order": 2,
+                    "path": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz",
+                    "signature": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz.asc",
+                    "size": 47635540
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "de3655f73471d7410da5a215c6fe389b5186b12d6fda2a01c08344bdf596faf8",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-3.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-3.tar.xz.asc",
+                    "size": 540
+                }
+            ],
+            "type": "full",
+            "version": 3,
+            "version_detail": "rootfs=2024-07-25T11:11:01Z_arm64_master_1142_98092771990668e75df5ce87b54dc153c4c3d300,device=20240720-25527,boot=20231130-32294,keyring=archive-master,tag=OTA-5,version=3"
+        },
+        {
+            "base": 2,
+            "description": "rootfs=2024-07-25T11:11:01Z_arm64_master_1142_98092771990668e75df5ce87b54dc153c4c3d300,device=20240720-25527,boot=20231130-32294,keyring=archive-master,tag=OTA-5,version=3",
+            "files": [
+                {
+                    "checksum": "38826187c9fd40d401b0c56830a660103fa1ad87821ab8d7faf67b4feb387d0a",
+                    "order": 0,
+                    "path": "/pool/rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.delta-rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.tar.xz",
+                    "signature": "/pool/rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.delta-rootfs-c635544b5a0fd78c8bc39b484037f3e8d6828146edc08e17212988c0cb88a388.tar.xz.asc",
+                    "size": 81283564
+                },
+                {
+                    "checksum": "405ac5334f493a978dc314db4753e23b551915e6d57ec3370ed66fee3f8bb443",
+                    "order": 1,
+                    "path": "/pool/device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.delta-device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.tar.xz",
+                    "signature": "/pool/device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.delta-device-300a9ee80bd10eb628288aacda013cf0eb0816368872061185c2cf2068dc3c84.tar.xz.asc",
+                    "size": 116868528
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 2,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "de3655f73471d7410da5a215c6fe389b5186b12d6fda2a01c08344bdf596faf8",
+                    "order": 3,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-3.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-3.tar.xz.asc",
+                    "size": 540
+                }
+            ],
+            "type": "delta",
+            "version": 3,
+            "version_detail": "rootfs=2024-07-25T11:11:01Z_arm64_master_1142_98092771990668e75df5ce87b54dc153c4c3d300,device=20240720-25527,boot=20231130-32294,keyring=archive-master,tag=OTA-5,version=3"
+        },
+        {
+            "description": "rootfs=2024-11-04T02:31:24Z_arm64_master_1248_46cdcdeb59b6794ff78db3e9ec92e1f0508317d6,device=20241021-6718,boot=20231130-32294,keyring=archive-master,tag=OTA-6,version=4",
+            "files": [
+                {
+                    "checksum": "0ee2c60eb48ec47ba6eaad3b44713c322b4018a8aeb94473b8334511c307e2d3",
+                    "order": 0,
+                    "path": "/pool/rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.tar.xz",
+                    "signature": "/pool/rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.tar.xz.asc",
+                    "size": 478484128
+                },
+                {
+                    "checksum": "a8c0d6652e5fe3bb578de0352ac2ef81fd212ee2ac5389915047c7f84f055ce5",
+                    "order": 1,
+                    "path": "/pool/device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.tar.xz",
+                    "signature": "/pool/device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.tar.xz.asc",
+                    "size": 143856608
+                },
+                {
+                    "checksum": "eb58bb286defd7bca273647c8fee927a76e8d97a110a982eb33a200fed432f31",
+                    "order": 2,
+                    "path": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz",
+                    "signature": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz.asc",
+                    "size": 47635540
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "f1a6131474a2168a6cbdb1d9a65203caef26ed22a72e762e3942ce7394ef85ee",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-4.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-4.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "full",
+            "version": 4,
+            "version_detail": "rootfs=2024-11-04T02:31:24Z_arm64_master_1248_46cdcdeb59b6794ff78db3e9ec92e1f0508317d6,device=20241021-6718,boot=20231130-32294,keyring=archive-master,tag=OTA-6,version=4"
+        },
+        {
+            "base": 3,
+            "description": "rootfs=2024-11-04T02:31:24Z_arm64_master_1248_46cdcdeb59b6794ff78db3e9ec92e1f0508317d6,device=20241021-6718,boot=20231130-32294,keyring=archive-master,tag=OTA-6,version=4",
+            "files": [
+                {
+                    "checksum": "08bd599b2349723a6b1c13e119ce612d60bbff6d7caa0b3c89dd8f488021e795",
+                    "order": 0,
+                    "path": "/pool/rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.delta-rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.tar.xz",
+                    "signature": "/pool/rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.delta-rootfs-126e7f3d303948d9cc1ec914566472adf78d80a90a65646eb091de52a7ee8323.tar.xz.asc",
+                    "size": 33092712
+                },
+                {
+                    "checksum": "8bd193b460ebfaef0c52329896a70c63130de5ef98591029aca6b13843ffc335",
+                    "order": 1,
+                    "path": "/pool/device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.delta-device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.tar.xz",
+                    "signature": "/pool/device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.delta-device-3108e9c4570fe5b49bb809513d84f1e82a4396d69826c77f0a0bf702823cba30.tar.xz.asc",
+                    "size": 116874916
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 2,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "f1a6131474a2168a6cbdb1d9a65203caef26ed22a72e762e3942ce7394ef85ee",
+                    "order": 3,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-4.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-4.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "delta",
+            "version": 4,
+            "version_detail": "rootfs=2024-11-04T02:31:24Z_arm64_master_1248_46cdcdeb59b6794ff78db3e9ec92e1f0508317d6,device=20241021-6718,boot=20231130-32294,keyring=archive-master,tag=OTA-6,version=4"
+        },
+        {
+            "description": "rootfs=2024-11-24T02:31:14Z_arm64_master_1270_6d496beea062c46326454beebb637133678f6bca,device=20241109-8808,boot=20231130-32294,keyring=archive-master,tag=OTA-7,version=5",
+            "files": [
+                {
+                    "checksum": "d3f3463976a96fe565de57fe74e3223d7b704f01d40e50a7648c6acc48e7fbf2",
+                    "order": 0,
+                    "path": "/pool/rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.tar.xz",
+                    "signature": "/pool/rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.tar.xz.asc",
+                    "size": 478497660
+                },
+                {
+                    "checksum": "ee24d360129742e742030b361176440a8b46b6ce8d8c4ce0cd5b11bf5d54d5e3",
+                    "order": 1,
+                    "path": "/pool/device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.tar.xz",
+                    "signature": "/pool/device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.tar.xz.asc",
+                    "size": 143856640
+                },
+                {
+                    "checksum": "eb58bb286defd7bca273647c8fee927a76e8d97a110a982eb33a200fed432f31",
+                    "order": 2,
+                    "path": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz",
+                    "signature": "/pool/boot-64c98957ef78622ab54a28c3295c4153845a3ecccac62fd917eaf4a5eda63535.tar.xz.asc",
+                    "size": 47635540
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "101a5707bcc3dcdbc9ebab77868f5a38fa723d62986b81053b2999215288b6cf",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-5.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-5.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "full",
+            "version": 5,
+            "version_detail": "rootfs=2024-11-24T02:31:14Z_arm64_master_1270_6d496beea062c46326454beebb637133678f6bca,device=20241109-8808,boot=20231130-32294,keyring=archive-master,tag=OTA-7,version=5"
+        },
+        {
+            "base": 4,
+            "description": "rootfs=2024-11-24T02:31:14Z_arm64_master_1270_6d496beea062c46326454beebb637133678f6bca,device=20241109-8808,boot=20231130-32294,keyring=archive-master,tag=OTA-7,version=5",
+            "files": [
+                {
+                    "checksum": "854ab97b5492ab33457c8feaa4154f416eea4bb4832bcb8b943d99e0b39170bf",
+                    "order": 0,
+                    "path": "/pool/rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.delta-rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.tar.xz",
+                    "signature": "/pool/rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.delta-rootfs-da71098ef1a7823190d7982ae270275acd415878cd3a2b5ee9421cba18ae2945.tar.xz.asc",
+                    "size": 8739172
+                },
+                {
+                    "checksum": "8fea33610c7302a6971ea191f4260f5e92f9445cacd3901f96701634ee26947a",
+                    "order": 1,
+                    "path": "/pool/device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.delta-device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.tar.xz",
+                    "signature": "/pool/device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.delta-device-57f1417b92763f60513a0c175dd4080a71988b35c97c470c5f61a8532fe65fd0.tar.xz.asc",
+                    "size": 116870344
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 2,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "101a5707bcc3dcdbc9ebab77868f5a38fa723d62986b81053b2999215288b6cf",
+                    "order": 3,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-5.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-5.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "delta",
+            "version": 5,
+            "version_detail": "rootfs=2024-11-24T02:31:14Z_arm64_master_1270_6d496beea062c46326454beebb637133678f6bca,device=20241109-8808,boot=20231130-32294,keyring=archive-master,tag=OTA-7,version=5"
+        },
+        {
+            "description": "rootfs=2025-02-25T06:03:50Z_arm64_master_1379_28025a29b274fdbd1b80ceb4e960ac0d9e041e3f,device=20250221-434,boot=20241206-8444,keyring=archive-master,tag=OTA-8,version=6",
+            "files": [
+                {
+                    "checksum": "075091c852347caa3ceeb4ca8646fbc5084fea0bfa1758fdc13b46653bb74c37",
+                    "order": 0,
+                    "path": "/pool/rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.tar.xz",
+                    "signature": "/pool/rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.tar.xz.asc",
+                    "size": 478533060
+                },
+                {
+                    "checksum": "b0a2b5b7292b30a49eeed76a00bf18dbff17f91d8438952e69629fbc29a030a9",
+                    "order": 1,
+                    "path": "/pool/device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.tar.xz",
+                    "signature": "/pool/device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.tar.xz.asc",
+                    "size": 143854384
+                },
+                {
+                    "checksum": "72a8f2e5d78dae46aa4e65a4d7fb84b5fc9742dab005690ec5246744ab8dec1a",
+                    "order": 2,
+                    "path": "/pool/boot-1bf62bc48e149e37b56e5db124650733761477121d005bae2f60add77ff73460.tar.xz",
+                    "signature": "/pool/boot-1bf62bc48e149e37b56e5db124650733761477121d005bae2f60add77ff73460.tar.xz.asc",
+                    "size": 47635128
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "3c227fc20efb0cc9523db392cffa8081ff6f17f93a5185d44f19fddae4a8d606",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-6.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-6.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "full",
+            "version": 6,
+            "version_detail": "rootfs=2025-02-25T06:03:50Z_arm64_master_1379_28025a29b274fdbd1b80ceb4e960ac0d9e041e3f,device=20250221-434,boot=20241206-8444,keyring=archive-master,tag=OTA-8,version=6"
+        },
+        {
+            "base": 5,
+            "description": "rootfs=2025-02-25T06:03:50Z_arm64_master_1379_28025a29b274fdbd1b80ceb4e960ac0d9e041e3f,device=20250221-434,boot=20241206-8444,keyring=archive-master,tag=OTA-8,version=6",
+            "files": [
+                {
+                    "checksum": "7a3caecf8c8954f9ac6390ff13f0f039a4e4718b425aab4bde57ba53ed13763e",
+                    "order": 0,
+                    "path": "/pool/rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.delta-rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.tar.xz",
+                    "signature": "/pool/rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.delta-rootfs-c5efe7bf542132db130a999c96e4aeb623b3e92448cda817223cc5264447c501.tar.xz.asc",
+                    "size": 62314420
+                },
+                {
+                    "checksum": "2e1b3d08e007727f9862e28369a84e66187fe360e9ae6e45e8ec8f36725004a5",
+                    "order": 1,
+                    "path": "/pool/device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.delta-device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.tar.xz",
+                    "signature": "/pool/device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.delta-device-6f499a744e14e36923da688f4a421b1c72c191bb4d024ab5c9d267048b9e422c.tar.xz.asc",
+                    "size": 116871920
+                },
+                {
+                    "checksum": "72a8f2e5d78dae46aa4e65a4d7fb84b5fc9742dab005690ec5246744ab8dec1a",
+                    "order": 2,
+                    "path": "/pool/boot-1bf62bc48e149e37b56e5db124650733761477121d005bae2f60add77ff73460.tar.xz",
+                    "signature": "/pool/boot-1bf62bc48e149e37b56e5db124650733761477121d005bae2f60add77ff73460.tar.xz.asc",
+                    "size": 47635128
+                },
+                {
+                    "checksum": "972d73c58b99fccc6a986951350b9b3b06d470f45bbc6d7f076452f312479bfa",
+                    "order": 3,
+                    "path": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz",
+                    "signature": "/pool/keyring-400895c98ce498ca2d89a7ff0266361b427057d52e4be69b10118fbcbf2eef34.tar.xz.asc",
+                    "size": 1556
+                },
+                {
+                    "checksum": "3c227fc20efb0cc9523db392cffa8081ff6f17f93a5185d44f19fddae4a8d606",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-6.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-6.tar.xz.asc",
+                    "size": 544
+                }
+            ],
+            "type": "delta",
+            "version": 6,
+            "version_detail": "rootfs=2025-02-25T06:03:50Z_arm64_master_1379_28025a29b274fdbd1b80ceb4e960ac0d9e041e3f,device=20250221-434,boot=20241206-8444,keyring=archive-master,tag=OTA-8,version=6"
+        },
+        {
+            "description": "rootfs=2025-05-28T05:02:10Z_arm64_master_1476_8f9a4ee123a5e75f7fe1bbb4055766023b60f2f9,device=20250414-9774,boot=20250401-6671,keyring=archive-master,tag=OTA-9,version=7",
+            "files": [
+                {
+                    "checksum": "13f524bc30497c0b2fe21122f8f03653ddaa12334b805657a48a59fcbe78347e",
+                    "order": 0,
+                    "path": "/pool/rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.tar.xz",
+                    "signature": "/pool/rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.tar.xz.asc",
+                    "size": 487089576
+                },
+                {
+                    "checksum": "46005f8a2276d3af69191df31596a3a96d70cfd80f789cd58f2fe12326830f57",
+                    "order": 1,
+                    "path": "/pool/device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.tar.xz",
+                    "signature": "/pool/device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.tar.xz.asc",
+                    "size": 143983988
+                },
+                {
+                    "checksum": "0b74b228477598814022cd035d44af2c8c6754415e1f2fca9157558b4ace9f6c",
+                    "order": 2,
+                    "path": "/pool/boot-5ffaae8b9c27e263f4ba06c6ededad543ee9d09f0f16b923c7ed4448ba8125cc.tar.xz",
+                    "signature": "/pool/boot-5ffaae8b9c27e263f4ba06c6ededad543ee9d09f0f16b923c7ed4448ba8125cc.tar.xz.asc",
+                    "size": 47637300
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "87052eb79e62dde6914e1ba720a0b1b5b471b2a74efb3dd6b7b44d7ebeb7df21",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-7.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-7.tar.xz.asc",
+                    "size": 540
+                }
+            ],
+            "type": "full",
+            "version": 7,
+            "version_detail": "rootfs=2025-05-28T05:02:10Z_arm64_master_1476_8f9a4ee123a5e75f7fe1bbb4055766023b60f2f9,device=20250414-9774,boot=20250401-6671,keyring=archive-master,tag=OTA-9,version=7"
+        },
+        {
+            "base": 6,
+            "description": "rootfs=2025-05-28T05:02:10Z_arm64_master_1476_8f9a4ee123a5e75f7fe1bbb4055766023b60f2f9,device=20250414-9774,boot=20250401-6671,keyring=archive-master,tag=OTA-9,version=7",
+            "files": [
+                {
+                    "checksum": "589329bd0139d23f573ee30cad4f1091a7d0a9e226d0d13982ec104c2e0d5673",
+                    "order": 0,
+                    "path": "/pool/rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.delta-rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.tar.xz",
+                    "signature": "/pool/rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.delta-rootfs-7e0a272ef9fcdabd5161031319fde6316b0f3a8c630087a411c68a26d0c95dad.tar.xz.asc",
+                    "size": 34066832
+                },
+                {
+                    "checksum": "6f691dfa4a0ecea88e39ad306eab1e66ddac658047f3abcf77f47a632ec4141a",
+                    "order": 1,
+                    "path": "/pool/device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.delta-device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.tar.xz",
+                    "signature": "/pool/device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.delta-device-200f990f09c0f25126f8a528127680412d12be080dd1752e23b285ce1eb7d9d3.tar.xz.asc",
+                    "size": 117162668
+                },
+                {
+                    "checksum": "0b74b228477598814022cd035d44af2c8c6754415e1f2fca9157558b4ace9f6c",
+                    "order": 2,
+                    "path": "/pool/boot-5ffaae8b9c27e263f4ba06c6ededad543ee9d09f0f16b923c7ed4448ba8125cc.tar.xz",
+                    "signature": "/pool/boot-5ffaae8b9c27e263f4ba06c6ededad543ee9d09f0f16b923c7ed4448ba8125cc.tar.xz.asc",
+                    "size": 47637300
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "87052eb79e62dde6914e1ba720a0b1b5b471b2a74efb3dd6b7b44d7ebeb7df21",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-7.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-7.tar.xz.asc",
+                    "size": 540
+                }
+            ],
+            "type": "delta",
+            "version": 7,
+            "version_detail": "rootfs=2025-05-28T05:02:10Z_arm64_master_1476_8f9a4ee123a5e75f7fe1bbb4055766023b60f2f9,device=20250414-9774,boot=20250401-6671,keyring=archive-master,tag=OTA-9,version=7"
+        },
+        {
+            "description": "rootfs=2025-09-11T05:32:23Z_arm64_ubports/focal_86_a145dc35f7291fd89335d1c6b7659d994a000687,device=20250722-9695,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-10,version=8",
+            "files": [
+                {
+                    "checksum": "f400b680c8ca8ab58bd875c0d2222b39484cc18b84b334f4cdbdfab2266addd4",
+                    "order": 0,
+                    "path": "/pool/rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.tar.xz",
+                    "signature": "/pool/rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.tar.xz.asc",
+                    "size": 487077028
+                },
+                {
+                    "checksum": "189a80dec89851d04778dec7bfd1b18bcc8534f4cfd741873bcdd37fd15e3419",
+                    "order": 1,
+                    "path": "/pool/device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.tar.xz",
+                    "signature": "/pool/device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.tar.xz.asc",
+                    "size": 143984020
+                },
+                {
+                    "checksum": "bbd430b3a60b922ae13041b956c8e4ba1713a7298995733bef5cb7b94f411123",
+                    "order": 2,
+                    "path": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz",
+                    "signature": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz.asc",
+                    "size": 47694492
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "00b9f0e0e2cc5087db63b942ef0e57de385f1bed1a01dff91a527e5271ced5e6",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-8.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-8.tar.xz.asc",
+                    "size": 552
+                }
+            ],
+            "type": "full",
+            "version": 8,
+            "version_detail": "rootfs=2025-09-11T05:32:23Z_arm64_ubports/focal_86_a145dc35f7291fd89335d1c6b7659d994a000687,device=20250722-9695,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-10,version=8"
+        },
+        {
+            "base": 7,
+            "description": "rootfs=2025-09-11T05:32:23Z_arm64_ubports/focal_86_a145dc35f7291fd89335d1c6b7659d994a000687,device=20250722-9695,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-10,version=8",
+            "files": [
+                {
+                    "checksum": "3a97b06a4b69045901a8f1cb0cd5f7936312a4e0730ccb1170a05d67243de77f",
+                    "order": 0,
+                    "path": "/pool/rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.delta-rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.tar.xz",
+                    "signature": "/pool/rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.delta-rootfs-22e4ec8a4e69b0f5d3ba6a819f5c7331a271165ac94f693f203971673eb3377a.tar.xz.asc",
+                    "size": 50323412
+                },
+                {
+                    "checksum": "e9b15a7a6e22b5d20675735f0481213b86c7c880fbe292dc399496277acab84e",
+                    "order": 1,
+                    "path": "/pool/device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.delta-device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.tar.xz",
+                    "signature": "/pool/device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.delta-device-ddd08c1799a0e5231f73fbb18a97fdb94c94e73df6d8b38c558d740309979501.tar.xz.asc",
+                    "size": 117146608
+                },
+                {
+                    "checksum": "bbd430b3a60b922ae13041b956c8e4ba1713a7298995733bef5cb7b94f411123",
+                    "order": 2,
+                    "path": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz",
+                    "signature": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz.asc",
+                    "size": 47694492
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "00b9f0e0e2cc5087db63b942ef0e57de385f1bed1a01dff91a527e5271ced5e6",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-8.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-8.tar.xz.asc",
+                    "size": 552
+                }
+            ],
+            "type": "delta",
+            "version": 8,
+            "version_detail": "rootfs=2025-09-11T05:32:23Z_arm64_ubports/focal_86_a145dc35f7291fd89335d1c6b7659d994a000687,device=20250722-9695,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-10,version=8"
+        },
+        {
+            "description": "rootfs=2025-11-18T06:30:46Z_arm64_ubports/focal_159_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251014-27471,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-11,version=9",
+            "files": [
+                {
+                    "checksum": "8795a6f9af4d60b4282598b107a5e9858df9575ab35a1d04db577653453e5133",
+                    "order": 0,
+                    "path": "/pool/rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.tar.xz",
+                    "signature": "/pool/rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.tar.xz.asc",
+                    "size": 487023968
+                },
+                {
+                    "checksum": "c1355afe0f4d1d5fbb4144da637af46ed23af21a8f81966f0eff8322de55b0df",
+                    "order": 1,
+                    "path": "/pool/device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.tar.xz",
+                    "signature": "/pool/device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.tar.xz.asc",
+                    "size": 143983992
+                },
+                {
+                    "checksum": "bbd430b3a60b922ae13041b956c8e4ba1713a7298995733bef5cb7b94f411123",
+                    "order": 2,
+                    "path": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz",
+                    "signature": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz.asc",
+                    "size": 47694492
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "fe79108138f115d25a1cdd25cb064b4cc61a03c1b7c7d0e039f45be61d2a078a",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-9.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-9.tar.xz.asc",
+                    "size": 556
+                }
+            ],
+            "type": "full",
+            "version": 9,
+            "version_detail": "rootfs=2025-11-18T06:30:46Z_arm64_ubports/focal_159_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251014-27471,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-11,version=9"
+        },
+        {
+            "base": 8,
+            "description": "rootfs=2025-11-18T06:30:46Z_arm64_ubports/focal_159_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251014-27471,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-11,version=9",
+            "files": [
+                {
+                    "checksum": "de97f1e63713010c210f56a966290b67993e7a35a0fd77225c264efb63b2ee68",
+                    "order": 0,
+                    "path": "/pool/rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.delta-rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.tar.xz",
+                    "signature": "/pool/rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.delta-rootfs-b85e238596290323e457b23d4895f05fddd2e38ae7e43a67e40810d8f435a4d2.tar.xz.asc",
+                    "size": 8009704
+                },
+                {
+                    "checksum": "72321513c95044c5c6eea695350d39ee915cdd9118ca7edd69c24830045bf846",
+                    "order": 1,
+                    "path": "/pool/device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.delta-device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.tar.xz",
+                    "signature": "/pool/device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.delta-device-ff8b1be83852875de6d7f75cc186af8b7668ee8a827c32d7e5ae084341a58c2b.tar.xz.asc",
+                    "size": 117162160
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 2,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "fe79108138f115d25a1cdd25cb064b4cc61a03c1b7c7d0e039f45be61d2a078a",
+                    "order": 3,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-9.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-9.tar.xz.asc",
+                    "size": 556
+                }
+            ],
+            "type": "delta",
+            "version": 9,
+            "version_detail": "rootfs=2025-11-18T06:30:46Z_arm64_ubports/focal_159_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251014-27471,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-11,version=9"
+        },
+        {
+            "description": "rootfs=2026-02-06T11:02:27Z_arm64_ubports/focal_239_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251209-13626,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-12,version=10",
+            "files": [
+                {
+                    "checksum": "890982ce86b2597aa56bb424e81f92eeffae2afa51c3d3509a048a80ad407558",
+                    "order": 0,
+                    "path": "/pool/rootfs-5df07ff97f843f279147b2347c8ac151df3cf2a4554df4b6779d588e01a2a87b.tar.xz",
+                    "signature": "/pool/rootfs-5df07ff97f843f279147b2347c8ac151df3cf2a4554df4b6779d588e01a2a87b.tar.xz.asc",
+                    "size": 486833472
+                },
+                {
+                    "checksum": "fec536fd56c535bfd941a52b4ea76afce47a7ff4442b60c4959cf571247be865",
+                    "order": 1,
+                    "path": "/pool/device-16f1c0d8d44e9a2501510fc0f21872e927b8d7a804b97b025d2f94a1fbda7468.tar.xz",
+                    "signature": "/pool/device-16f1c0d8d44e9a2501510fc0f21872e927b8d7a804b97b025d2f94a1fbda7468.tar.xz.asc",
+                    "size": 143983924
+                },
+                {
+                    "checksum": "bbd430b3a60b922ae13041b956c8e4ba1713a7298995733bef5cb7b94f411123",
+                    "order": 2,
+                    "path": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz",
+                    "signature": "/pool/boot-bda5440a84f2222c5fa2fa4407160b553b6d5b0691dac92e56c907fe6ccaa740.tar.xz.asc",
+                    "size": 47694492
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 3,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "3b4496df27566800ff39bc8e34c85ddea8084d2e40b55968a1827aa57854f68a",
+                    "order": 4,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-10.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-10.tar.xz.asc",
+                    "size": 552
+                }
+            ],
+            "type": "full",
+            "version": 10,
+            "version_detail": "rootfs=2026-02-06T11:02:27Z_arm64_ubports/focal_239_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251209-13626,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-12,version=10"
+        },
+        {
+            "base": 9,
+            "description": "rootfs=2026-02-06T11:02:27Z_arm64_ubports/focal_239_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251209-13626,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-12,version=10",
+            "files": [
+                {
+                    "checksum": "da354d80e55a964b5064a8ded605d73d49851c992f3af91246e6e8b09df22b56",
+                    "order": 0,
+                    "path": "/pool/rootfs-5df07ff97f843f279147b2347c8ac151df3cf2a4554df4b6779d588e01a2a87b.delta-rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.tar.xz",
+                    "signature": "/pool/rootfs-5df07ff97f843f279147b2347c8ac151df3cf2a4554df4b6779d588e01a2a87b.delta-rootfs-4c6dcb2ac9b71e3e6790f3a586a66736e127b0c817d7a45feb5049e4f255484a.tar.xz.asc",
+                    "size": 3245104
+                },
+                {
+                    "checksum": "21b2c44cad32137970f6a6d1e2d27fb43ffafaccf53315281fe65e7c998e97dd",
+                    "order": 1,
+                    "path": "/pool/device-16f1c0d8d44e9a2501510fc0f21872e927b8d7a804b97b025d2f94a1fbda7468.delta-device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.tar.xz",
+                    "signature": "/pool/device-16f1c0d8d44e9a2501510fc0f21872e927b8d7a804b97b025d2f94a1fbda7468.delta-device-046fcf0d8228822a496e9bc7b750388b18df2a540db0eeec2e30a36077c10a78.tar.xz.asc",
+                    "size": 117158012
+                },
+                {
+                    "checksum": "afc915925ff6b23316b99c032435220bd791990b52db9bed25981754b3708e0a",
+                    "order": 2,
+                    "path": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz",
+                    "signature": "/pool/keyring-162141caf64cd64c4ca014760930c524e4ee051e0afe1200c47c42cebf11fd44.tar.xz.asc",
+                    "size": 1560
+                },
+                {
+                    "checksum": "3b4496df27566800ff39bc8e34c85ddea8084d2e40b55968a1827aa57854f68a",
+                    "order": 3,
+                    "path": "/20.04/arm64/android9plus/stable/miatoll/version-10.tar.xz",
+                    "signature": "/20.04/arm64/android9plus/stable/miatoll/version-10.tar.xz.asc",
+                    "size": 552
+                }
+            ],
+            "type": "delta",
+            "version": 10,
+            "version_detail": "rootfs=2026-02-06T11:02:27Z_arm64_ubports/focal_239_6879c812a6794ca364e6e9ae71d63a8ae0c06485,device=20251209-13626,boot=20250808-22608,keyring=archive-master,tag=20.04 OTA-12,version=10"
+        }
+    ]
+}

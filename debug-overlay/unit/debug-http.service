@@ -1,0 +1,10 @@
+[Unit]
+Description=Debug HTTP log server (non-blocking)
+After=network.target
+[Service]
+Type=simple
+ExecStartPre=/bin/sleep 45
+ExecStart=/bin/sh -c 'mkdir -p /run/debugwww; { echo "IMG-V14-MARKER"; date; echo; echo "=== systemd"; systemctl is-system-running 2>&1; systemctl --failed --no-pager 2>&1; echo; echo "=== units"; for u in lxc-android-config mount-halium-overlay mount-android-partitions lightdm repowerd usb-moded NetworkManager; do echo "-- $u: active=$(systemctl is-active $u 2>/dev/null) enabled=$(systemctl is-enabled $u 2>/dev/null)"; systemctl status $u --no-pager -l 2>&1 | head -12; echo; done; echo "=== pre-start"; cat /run/umi-pre-start.log 2>&1; echo; echo "=== journal"; journalctl -b --no-pager 2>&1 | tail -250; echo; echo "=== dmesg"; dmesg 2>&1 | tail -120; echo; echo "=== mounts"; mount 2>&1 | grep -E "mapper|android|userdata"; echo; echo "=== ps"; ps aux 2>&1 | head -40; } > /run/debugwww/index.html 2>&1; exec /usr/bin/python3 -m http.server 80 --directory /run/debugwww'
+Restart=no
+[Install]
+WantedBy=multi-user.target

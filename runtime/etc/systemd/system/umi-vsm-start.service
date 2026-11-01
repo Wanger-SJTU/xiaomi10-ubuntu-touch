@@ -1,0 +1,12 @@
+[Unit]
+Description=umi: start vndservicemanager inside the Android container and bring up the UI
+After=lxc-android-config.service lightdm.service
+Wants=lxc-android-config.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/umi-start-vsm.sh
+
+[Install]
+WantedBy=multi-user.target

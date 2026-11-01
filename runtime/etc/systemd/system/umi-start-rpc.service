@@ -1,0 +1,12 @@
+[Unit]
+Description=umi: start adsprpcd/cdsprpcd inside the container
+After=lxc-android-config.service
+Wants=lxc-android-config.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/etc/umi-start-rpc.sh
+
+[Install]
+WantedBy=multi-user.target

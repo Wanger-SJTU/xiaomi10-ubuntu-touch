@@ -1,0 +1,70 @@
+#!/bin/sh
+# Mi 10 (umi): bind-mount replacements over Android binaries before the container starts.
+# Runs as ExecStartPre of lxc-android-config.service.
+#
+# 重要：这个脚本**必须永远 exit 0**。任何一步失败都不能让 lxc-android-config 启动失败，
+# 否则 Android 容器不会启动 -> 没有显示合成器 -> 屏幕停在开机 logo。
+#
+# 当前状态：
+#  - VSM 补丁工具 (umi-patch-vsm) 尚未为 umi 生成，因此这里**检测存在性，缺失则跳过**。
+#  - audio-hal-stub / storaged stub 是通用做法，保留。
+#  - 所有日志写 /run/umi-pre-start.log 便于事后取证。
+R=/var/lib/lxc/android/rootfs
+O=/var/lib/lxc/android/overrides
+RUN=/run/umi
+LOG=/run/umi-pre-start.log
+
+log() { echo "$*" >> "$LOG" 2>/dev/null; }
+
+[ -d /run ] && : > "$LOG" 2>/dev/null
+log "== umi pre-start hook begin $(date 2>/dev/null)"
+
+bind() {
+    if [ -f "$1" ] && [ -f "$2" ] && ! grep -q " $2 " /proc/mounts; then
+        if mount -o bind "$1" "$2"; then log "bind OK $1 -> $2"; else log "bind FAIL $1 -> $2"; fi
+    else
+        log "bind SKIP $1 -> $2 (src or dst missing / already mounted)"
+    fi
+}
+
+# /run is noexec and bind mounts inherit that flag -> dedicated tmpfs with exec
+if mkdir -p "$RUN" 2>/dev/null; then
+    mountpoint -q "$RUN" || mount -t tmpfs -o mode=0755,size=4m umi-run "$RUN" 2>/dev/null
+    log "tmpfs $RUN ready"
+else
+    log "cannot create $RUN"
+fi
+
+# --- vndservicemanager patch (optional) ---
+VSM="$RUN/vndservicemanager.nosel"
+if [ -x /usr/local/sbin/umi-patch-vsm ] && [ -f "$R/vendor/bin/vndservicemanager" ]; then
+    if [ ! -f "$VSM" ] && ! grep -q " $R/vendor/bin/vndservicemanager " /proc/mounts 2>/dev/null; then
+        if /usr/bin/python3 /usr/local/sbin/umi-patch-vsm "$R/vendor/bin/vndservicemanager" "$VSM" >>"$LOG" 2>&1; then
+            chmod 755 "$VSM" 2>/dev/null
+            log "VSM patched OK"
+        else
+            log "VSM patch FAILED (继续启动，不阻塞容器)"
+        fi
+    fi
+    bind "$VSM" "$R/vendor/bin/vndservicemanager"
+else
+    log "VSM patch tool missing -> 跳过 VSM 替换（不影响容器启动）"
+fi
+
+# --- audio HAL / storaged stubs ---
+bind "$O/audio-hal-stub" "$R/vendor/bin/hw/android.hardware.audio.service"
+bind "$O/audio-hal-stub" "$R/system/bin/storaged"
+
+# --- audio HAL service .rc: 去掉 socket 行（由 PulseAudio 侧提供） ---
+for ARC in "$R/vendor/etc/init/android.hardware.audio.service.rc" "$R/vendor/etc/init/hw/init.qcom.rc"; do
+    if [ -f "$ARC" ] && ! grep -q " $ARC " /proc/mounts 2>/dev/null; then
+        grep -v "socket audio_hw_socket" "$ARC" > "$RUN/${ARC##*/}" 2>/dev/null && \
+            bind "$RUN/${ARC##*/}" "$ARC"
+    fi
+done
+
+# --- flashlight LED 权限 ---
+[ -e /sys/class/leds/flashlight/brightness ] && chmod 0666 /sys/class/leds/flashlight/brightness 2>/dev/null && log "flashlight chmod OK"
+
+log "== umi pre-start hook end (always exit 0)"
+exit 0

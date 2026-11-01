@@ -1,0 +1,13 @@
+umi:
+  Name: umi
+  PrettyName: Xiaomi Mi 10
+  DeviceType: phone
+  GridUnit: 21
+  PrimaryOrientation: Portrait
+  # Android 12 vendor RIL (qcrild) is HIDL/binder only - no /dev/socket/rild
+  OfonoPlugin: binder
+  # Torch: Xiaomi "flashlight" LED class (0..750). The qcom led:torch_N/led:switch_N pair faults here
+  # (led short/open on the unpopulated channel).
+  FlashlightSysfsPath: /sys/class/leds/flashlight/brightness
+  FlashlightSimpleEnableValue: 400
+  FlashlightSimpleDisableValue: 0
