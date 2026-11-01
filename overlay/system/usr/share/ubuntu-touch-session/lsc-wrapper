@@ -1,14 +1,12 @@
 #!/bin/sh
-# ---- umi (Xiaomi Mi 10) Ubuntu Touch port fixes ---------------------------------
-# 1) glibc 2.39 的静态 TLS 不足 -> libhybris linker 加载失败 -> 合成器起不来
-export GLIBC_TUNABLES=glibc.rtld.optional_static_tls=8388608
-# 2) libhybris 需要 vendor namespace 才能找到 /vendor/lib64/{egl,hw} 下的库
+# umi (Xiaomi Mi 10) Ubuntu Touch port: libhybris environment.
+#
+# 没有这组变量时，合成器日志会报
+#   library "eglSubDriverAndroid.so" not found
+# 因为 hybris 默认的 linker 命名空间看不到 vendor 里的 EGL/HWC 库。
+# 设置后 libhybris 会按 vendor namespace 解析 /vendor/lib64/{egl,hw}。
 export HYBRIS_USE_VENDOR_NAMESPACE=1
 export HYBRIS_LD_LIBRARY_PATH=/vendor/lib64/egl:/vendor/lib64/hw:/vendor/lib64:/system/lib64/hw:/system/lib64
-# 3) 合成器自身链接 glvnd，而平台通过 hybris 建 context，导致 GL_VENDOR 为 NULL -> 合成器退出
-#    用 LD_PRELOAD shim 提供 GL_VENDOR/RENDERER/VERSION（源码见 tools/glshim.c）
-export LD_PRELOAD=/usr/lib/aarch64-linux-gnu/libglshim.so
-# ---------------------------------------------------------------------------------
 
 # Allow system integrators to tweak the default system compositor behavior
 LSC_FLAGS="--enable-num-framebuffers-quirk=true --disable-overlays=false"

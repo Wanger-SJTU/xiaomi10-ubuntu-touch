@@ -5,6 +5,8 @@
 
 > 本仓库包含完整的构建脚本、设备 overlay、内核补丁、运行时修复脚本和逐步操作记录，
 > 目标是从零**完整复现**当前设备上的系统（见 `docs/OPERATIONS.md`，8.8 万字逐步记录）。
+>
+> 想知道「相对上游到底改了什么」——直接看 **[docs/ADAPTATIONS.md](docs/ADAPTATIONS.md)**。
 
 ---
 
@@ -227,6 +229,7 @@ lxc-attach -n android -- /system/bin/sh -c '...'   # 进 Android 容器
 
 ## 8. 相关文档
 
+- [docs/ADAPTATIONS.md](docs/ADAPTATIONS.md) — **适配改动清单**：相对上游改了哪些、为什么改
 - [docs/OPERATIONS.md](docs/OPERATIONS.md) — **主记录**：每一步命令、结果、证据、踩坑与回滚
 - [docs/FLASH-PLAN.md](docs/FLASH-PLAN.md) — 刷机计划
 - [docs/rootfs-notes.md](docs/rootfs-notes.md) — rootfs 构建与 VNDK 注入细节
