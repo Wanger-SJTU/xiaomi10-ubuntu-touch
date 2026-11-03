@@ -227,6 +227,22 @@ lxc-attach -n android -- /system/bin/sh -c '...'   # 进 Android 容器
 
 ---
 
+## 8.1 提交署名与钩子
+
+本仓库的所有提交统一附带联合署名：
+
+```
+Co-authored-by: DeepSeek Harness <noreply@deepseek.com>
+```
+
+首次克隆后执行一次即可让**每个新提交自动追加**该署名：
+
+```sh
+sh scripts/enable-git-hooks.sh     # 等价于 git config core.hooksPath .githooks
+```
+
+钩子文件为 `.githooks/commit-msg`（已存在的署名不会重复追加，merge / fixup 提交会跳过）。
+
 ## 8. 相关文档
 
 - [docs/ADAPTATIONS.md](docs/ADAPTATIONS.md) — **适配改动清单**：相对上游改了哪些、为什么改

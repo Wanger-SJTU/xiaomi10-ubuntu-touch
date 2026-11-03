@@ -1,0 +1,24 @@
+#!/bin/sh
+# Git commit-msg hook: automatically append the DeepSeek Harness co-authorship
+# trailer to every commit message, unless it is already present.
+#
+# Enable it once per clone:
+#   git config core.hooksPath .githooks
+# (or run scripts/enable-git-hooks.sh)
+
+msg_file="$1"
+trailer="Co-authored-by: DeepSeek Harness <noreply@deepseek.com>"
+
+[ -f "$msg_file" ] || exit 0
+
+# Skip merge commits and fixup/squash commits.
+case "$(head -1 "$msg_file")" in
+    Merge\ *) exit 0 ;;
+    fixup!*|squash!*) exit 0 ;;
+esac
+
+# Only an actual trailer line counts (not a mention of it inside the body).
+if ! grep -qE '^Co-authored-by: DeepSeek Harness' "$msg_file"; then
+    printf '\n%s\n' "$trailer" >> "$msg_file"
+fi
+exit 0

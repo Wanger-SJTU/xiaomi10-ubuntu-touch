@@ -259,3 +259,48 @@ CameraService: 相机 app 显示「无法访问相机」
 | `runtime/var/.../phablet` | lightdm 自动登录 |
 | `debug-overlay/*` | SSH/HTTP 调试通道 |
 | `tools/glshim*`（legacy-24.04） | 24.04 glvnd 不兼容（已放弃） |
+
+## 10. WiFi（未完成）
+
+Mi 10 的 WLAN 是 **QCA6390/QCA6391**，挂在 SM8250 的 **Qualcomm PCIe 控制器**（`pcie@1c00000`）上，
+不是 SDIO/USB。内核里 `qcacld-3.0`（`CONFIG_QCA_CLD_WLAN=y`，profile `qca6390`）和 `cnss2` 都已编入，
+固件也通过 `umi-dsp-init.sh` 从 `/vendor/firmware_mnt/image` 暴露。
+
+但当前内核配置里：
+
+```
+# CONFIG_PCIE_QCOM is not set
+```
+
+即 **Qualcomm PCIe 主机控制器驱动没有编入** → PCIe 不会枚举 → `cnss2` 永远等不到设备 → 没有 `wlan0`：
+`ip link` 里只有 usb0/lo 等，dmesg 也没有任何 pcie/cnss 日志。
+
+尝试与结果（2026-11）：
+
+1. 在 `kona-perf_defconfig` 的产物上打开 `CONFIG_PCIE_QCOM=y`（并 `CONFIG_PCIEPORTBUS=y`、
+   `CONFIG_PCIE_DW_HOST=y`），LTO 增量重编内核、重打 `boot.img`（`mkbootimg` + `avbtool add_hash_footer`），
+   fastboot 刷入 `boot`。
+2. 结果：**设备卡在 Mi logo，USB 不枚举**（内核在 PCIe 初始化附近挂住）。
+3. 已刷回已知可启动的 `out/boot-ok-fsck.img`。
+
+注意点 / 复现命令（主机 wanger@192.168.10.156，路径 `/home/wanger/mi10/port`）：
+
+```sh
+# 主机缺 bison/flex 时，kconfig 可直接复用构建目录里已生成的 zconf.*（见下）
+cd ~/mi10/port/kernel
+export ARCH=arm64 PATH=/tmp/fakebin:<clang-r510928>/bin:$PATH
+export KCFLAGS=-Wno-error=fortify-source HOSTLDFLAGS=-fuse-ld=lld
+make O=../workdir/downloads/KERNEL_OBJ LLVM=1 LLVM_IAS=1 \
+     vendor/kona-perf_defconfig vendor/debugfs.config \
+     vendor/xiaomi/sm8250-common.config vendor/xiaomi/umi.config halium.config
+scripts/config --file ../workdir/downloads/KERNEL_OBJ/.config -e PCIE_QCOM
+make O=../workdir/downloads/KERNEL_OBJ LLVM=1 LLVM_IAS=1 olddefconfig
+make O=../workdir/downloads/KERNEL_OBJ LLVM=1 LLVM_IAS=1 -j$(nproc) Image
+```
+
+（`/tmp/fakebin/bison` 是一个只 `touch` 输出的假 bison，因为构建目录里
+`scripts/kconfig/zconf.tab.c` 已经存在；缺它时 `make olddefconfig` 会因主机没有 bison 失败。）
+
+**下一步方向**：对比 LOS `kona-perf_defconfig` 为何默认不开 PCIE；检查 PCIe 相关依赖是否还缺
+（PHY、clock、regulator、`CONFIG_PCI_QCOM*`）；用 panic-telnet/pstore 抓挂住时的最后内核日志；
+必要时从 MIUI 内核提取 config 作参照。
