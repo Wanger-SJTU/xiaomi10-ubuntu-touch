@@ -45,6 +45,9 @@ put "$RT/etc/umi-dsp-init.sh"        /etc/umi-dsp-init.sh        0755
 put "$RT/etc/umi-start-rpc.sh"       /etc/umi-start-rpc.sh       0755
 put "$RT/etc/umi-camera-fix.sh"      /etc/umi-camera-fix.sh      0755
 put "$RT/etc/umi-bypass-charging"    /etc/umi-bypass-charging    0755
+put "$RT/etc/umi-bypassd.py"         /etc/umi-bypassd.py         0755
+put "$RT/etc/systemd/system/umi-bypassd.service" /etc/systemd/system/umi-bypassd.service 0644
+put "$RT/usr/share/lomiri-system-settings/qml-plugins/battery/PageComponent.qml" /usr/share/lomiri-system-settings/qml-plugins/battery/PageComponent.qml 0644
 put "$RT/etc/udev/rules.d/75-umi-bypass-charging.rules" /etc/udev/rules.d/75-umi-bypass-charging.rules 0644
 put "$RT/etc/udev/rules.d/76-umi-wlan-name.rules" /etc/udev/rules.d/76-umi-wlan-name.rules 0644
 mkdir /var/lib/umi
@@ -81,6 +84,7 @@ run "symlink /etc/systemd/system/multi-user.target.wants/umi-vsm-start.service /
 run "symlink /etc/systemd/system/multi-user.target.wants/umi-start-rpc.service /etc/systemd/system/umi-start-rpc.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/umi-camera-fix.service /etc/systemd/system/umi-camera-fix.service"
 run "symlink /etc/systemd/system/timers.target.wants/umi-wlan-on.timer /etc/systemd/system/umi-wlan-on.timer"
+run "symlink /etc/systemd/system/multi-user.target.wants/umi-bypassd.service /etc/systemd/system/umi-bypassd.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/early-debug-ssh.service /etc/systemd/system/early-debug-ssh.service"
 run "symlink /etc/systemd/system/multi-user.target.wants/debug-http.service /etc/systemd/system/debug-http.service"
 

@@ -16,6 +16,16 @@ case "$1" in
     off|0)
         [ -w "$B" ] && echo 0 > "$B"
         ;;
+    auto)
+        # follow the preference saved from Settings > Battery (default on)
+        v=true
+        C=/home/phablet/.config/umi-bypass.conf
+        [ -f "$C" ] && v=$(sed -n "s/^bypass=//p" "$C" | tail -1)
+        case "$v" in
+            false|0|no|off) [ -w "$B" ] && echo 0 > "$B" ;;
+            *)              [ -w "$B" ] && echo 1 > "$B" ;;
+        esac
+        ;;
     *)
         [ -r "$B" ] && cat "$B"
         ;;

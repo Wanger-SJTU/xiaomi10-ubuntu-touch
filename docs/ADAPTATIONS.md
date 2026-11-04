@@ -527,3 +527,28 @@ SUBSYSTEM=="net", ACTION=="add", DRIVERS=="cnss_pci", NAME="wlan0"
 `halium.config` 里补了 `CONFIG_PCIE_QCOM=y` / `CONFIG_CNSS2=y` / `CONFIG_QCA_CLD_WLAN=y` /
 `CONFIG_QCA_CLD_WLAN_PROFILE="qca6390"`。若用模块方式（`=m`）编译，刷进去会**没有 /dev/wlan**、
 WiFi 全挂——重编内核前务必确认 obj 目录 `.config` 里这三项是 `=y`（本次踩过）。
+
+### 11.3 系统设置里的开关（动态开关）
+
+在「设置 → 电池」面板底部新增一行 **Direct power (bypass battery)** 开关：
+
+- **QML**：修改 `/usr/share/lomiri-system-settings/qml-plugins/battery/PageComponent.qml`
+  - 加 `import Qt.labs.settings 1.0`
+  - 加 `Settings { fileName: "/home/phablet/.config/umi-bypass.conf"; property bool bypass: true }`
+  - 在蓝牙那一行后面插一个 `SettingsListItems.Icon` + `Loader{ Switch }`，`checked` 绑定到该 Settings
+  - 原文件备份：`/var/lib/umi/battery-PageComponent.qml.orig`（在设备上）
+- **root 守护进程** `/etc/umi-bypassd.py`（systemd `umi-bypassd.service`，`After=basic.target`）：
+  每 1 秒读偏好文件，把 `bypass` 的值写到 `/sys/class/power_supply/battery/bypass_charging`。
+  **只在 USB 在线时生效**（否则伪满电会掩盖真实低电量）：
+  `value = read_pref() and usb_online()`。
+- **udev 规则**改为 `/etc/umi-bypass-charging auto`：插上 USB 时按偏好执行（默认开），拔掉时强制 off。
+- `/etc/umi-bypass-charging` 新增 `auto` 动作（解析偏好文件，缺省=true）。
+
+注意：`umi-bypassd.service` 若写 `After=multi-user.target` 会与 `WantedBy=multi-user.target`
+形成**排序环**，`systemctl start` 会卡住/服务起不来——必须用 `After=basic.target`（已踩过）。
+
+实测（USB 在线，改偏好文件立即生效）：
+```
+conf bypass=true  -> sysfs=1  status=Not charging
+conf bypass=false -> sysfs=0  status=Charging
+```

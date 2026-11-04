@@ -1,4 +1,4 @@
 # umi: enable battery bypass whenever external (USB) power is present, so the
 # phone runs from the adapter and the battery is not charged.
-SUBSYSTEM=="power_supply", KERNEL=="usb", ATTR{online}=="1", RUN+="/etc/umi-bypass-charging on"
+SUBSYSTEM=="power_supply", KERNEL=="usb", ATTR{online}=="1", RUN+="/etc/umi-bypass-charging auto"
 SUBSYSTEM=="power_supply", KERNEL=="usb", ATTR{online}=="0", RUN+="/etc/umi-bypass-charging off"

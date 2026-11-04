@@ -1,0 +1,12 @@
+[Unit]
+Description=umi: apply battery bypass preference from system settings
+After=basic.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 /etc/umi-bypassd.py
+Restart=always
+RestartSec=2
+
+[Install]
+WantedBy=multi-user.target
