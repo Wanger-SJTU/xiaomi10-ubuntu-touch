@@ -552,3 +552,45 @@ WiFi 全挂——重编内核前务必确认 obj 目录 `.config` 里这三项�
 conf bypass=true  -> sysfs=1  status=Not charging
 conf bypass=false -> sysfs=0  status=Charging
 ```
+
+## 12. 开发者模式（Developer mode）修复
+
+**现象**：设置 → 关于 → 开发者模式开关打不开/灰掉；`usb-moded` 日志：
+
+```
+mode developer_mode: network interface rndis0 does not exist
+no network interface
+mode setting failed, try charging_only
+```
+
+**根因**：usb-moded 的网络型 USB 模式（`developer_mode`、`rndis_adb` 等）需要把 IP 配到名为
+`rndis0` 的网卡上；而本机 USB gadget 的 RNDIS 函数是 `g_ether` 实现，网卡实际叫 **`usb0`**
+（`/sys/kernel/config/usb_gadget/g1/functions/rndis.usb0/ifname` = usb0）。
+`ubports-usb-moded-configurator` 的自动探测在这块内核上回落成 `rndis0`，
+于是所有带网络的模式都设置失败，ADB 函数 `ffs.adb` 也就永远不会被创建。
+
+**修复**：在 `/etc/default/usb-moded.d/50-umi-rndis-ifname.conf` 里直接给定（跳过自动探测）：
+
+```
+RNDIS_IFNAME=usb0
+RNDIS_FUNCTION=rndis.usb0
+```
+
+（该文件被 usb-moded.service 的 `EnvironmentFile=-/etc/default/usb-moded.d/*.conf` 加载，
+configurator 启动时用 envsubst 重新生成 `/run/ubports-usb-moded-conf/dyn-modes/*.ini`，
+所以重启后依然生效。）
+
+**验证（实测）**：
+```
+set_config("rndis_adb")     -> get_config = rndis_adb
+/sys/kernel/config/usb_gadget/g1/functions/ = ffs.adb ... (adb 功能出现)
+/dev/usb-ffs/adb            -> functionfs 已挂载
+systemctl is-active adbd    -> active
+gadget idProduct            -> 0x0005 (rndis_adb)
+PC 侧 adb devices           -> 5f17485d（可见；PC 需为 1209:0005 加 udev 规则）
+usb0                        -> 10.42.0.1/24（USB 网络不受影响）
+```
+桌面 UI（设置 → 关于 → 开发者模式）开关已可正常打开/关闭。
+
+备注：usb-moded 默认模式是 `mtp`（`/etc/usb-moded/10-ubports-defaults.ini`），
+所以**重启后开发者模式默认关闭**，需要在设置里再打开一次——这是上游行为。

@@ -46,6 +46,7 @@ put "$RT/etc/umi-start-rpc.sh"       /etc/umi-start-rpc.sh       0755
 put "$RT/etc/umi-camera-fix.sh"      /etc/umi-camera-fix.sh      0755
 put "$RT/etc/umi-bypass-charging"    /etc/umi-bypass-charging    0755
 put "$RT/etc/umi-bypassd.py"         /etc/umi-bypassd.py         0755
+put "$RT/etc/default/usb-moded.d/50-umi-rndis-ifname.conf" /etc/default/usb-moded.d/50-umi-rndis-ifname.conf 0644
 put "$RT/etc/systemd/system/umi-bypassd.service" /etc/systemd/system/umi-bypassd.service 0644
 put "$RT/usr/share/lomiri-system-settings/qml-plugins/battery/PageComponent.qml" /usr/share/lomiri-system-settings/qml-plugins/battery/PageComponent.qml 0644
 put "$RT/etc/udev/rules.d/75-umi-bypass-charging.rules" /etc/udev/rules.d/75-umi-bypass-charging.rules 0644
