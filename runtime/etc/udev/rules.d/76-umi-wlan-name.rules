@@ -1,0 +1,3 @@
+# umi: the QCA6390 WLAN driver is brought up late (after udev coldplug), so
+# systemd would rename the interface by PCI path (wlp1s0). Pin it to wlan0.
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="cnss_pci", NAME="wlan0"

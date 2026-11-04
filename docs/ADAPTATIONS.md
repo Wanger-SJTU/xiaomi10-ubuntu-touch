@@ -508,3 +508,22 @@ dmesg: "Battery bypass enabled" / "Battery bypass disabled"
 
 **待验证**：物理拆除电池后能否开机取决于 bootloader（ABL），属固件行为，本次未测试；
 若 ABL 允许无电池开机，本补丁的"伪电池"能保证系统不再因缺电池关机。
+
+### 11.1 补充：WLAN 接口名固定为 wlan0
+
+qcacld 由 `umi-wlan-on.timer` 在启动约 2 分钟后才拉起（晚于 udev coldplug），
+systemd 会按 PCI path 把网卡命名为 `wlp1s0`，导致 NM 里出现重复配置、脚本里的
+`/sys/class/net/wlan0` 判断失效。加一条 udev 规则固定名字：
+
+```
+# /etc/udev/rules.d/76-umi-wlan-name.rules
+SUBSYSTEM=="net", ACTION=="add", DRIVERS=="cnss_pci", NAME="wlan0"
+```
+
+实测重启后接口为 `wlan0`，NetworkManager 正常连接 `freedom-5G`（5GHz，HTTP 200）。
+
+### 11.2 内核配置提醒
+
+`halium.config` 里补了 `CONFIG_PCIE_QCOM=y` / `CONFIG_CNSS2=y` / `CONFIG_QCA_CLD_WLAN=y` /
+`CONFIG_QCA_CLD_WLAN_PROFILE="qca6390"`。若用模块方式（`=m`）编译，刷进去会**没有 /dev/wlan**、
+WiFi 全挂——重编内核前务必确认 obj 目录 `.config` 里这三项是 `=y`（本次踩过）。
