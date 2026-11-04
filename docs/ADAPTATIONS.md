@@ -354,3 +354,43 @@ dmesg | grep -i cnss | tail
 
 构建产物：`out/boot-wifi-mod.img`（PCIe 内核 + qcacld 模块版，51MB Image）、
 `/var/lib/umi/wlan.ko`（strip 后 11MB）。
+
+### 10.2 WiFi 第二轮：找到 fs_ready 触发点，校准阶段卡住（2026-11）
+
+对照 apollo 移植文档（`/tmp/apollo/docs/porting-log.md`，同 QCA6390 且已工作）确认关键补丁我们**都已包含**：
+`0006`(qcacld 日志打印到 kernel log)、`0007`(DYNAMIC_SINGLE_CHIP=qca6390)、
+`0008`(0.0.0.0 RTA_GATEWAY 视为无网关)、`0012`(firmware_loader 也搜索 /vendor/firmware_mnt/image)。
+
+apollo 的关键流程：**Android init 在 vendor 挂好后写 `fs_ready`，触发冷启动校准；
+`apollo-wlan-on.service` 等 dmesg 出现 "Calibration completed successfully" 后再写 `ON` 到 /dev/wlan。**
+
+我们照此实现后（手动验证）：
+
+```sh
+# 暴露固件（/vendor 只读，用 tmpfs+symlink 覆盖 /vendor/firmware）
+mkdir -p /run/fw; for f in /vendor/firmware/*; do ln -sf "$f" /run/fw/; done
+ln -sfn /vendor/firmware_mnt/image/qca6390 /run/fw/qca6390
+mountpoint -q /vendor/firmware || mount -o bind /run/fw /vendor/firmware
+# 触发冷启动校准（fs_ready 是 cnss2 platform device 的 sysfs 属性，取值 1）
+echo 1 > /sys/bus/platform/devices/b0000000.qcom,cnss-qca6390/fs_ready
+```
+
+结果：cnss 正常上电（PCI link resume → MHI POWER_ON → MISSION_MODE → WLFW server arriving →
+QMI connected → host capability），但日志停在：
+
+```
+cnss: Calibration done is 0
+cnss: Calibration duration not valid
+cnss: Sending iova starting 0xa0000000 with size 0x10010000
+cnss: PM relax, state: 0x9, count: 0
+```
+
+之后**固件不再发出 MEM_READY / REQUEST_MEM 指示**，cnss 状态机静默等待（数分钟无恢复日志）。
+没有 MEM_READY 就不会进入 tgt_cap → BDF download → M3 download → FW ready 的后续流程。
+
+已排除：固件路径（amss20.bin 已被 cnss 读取，MHI 已进 MISSION_MODE）、PCIe、供电/GPIO、regdb/BDF 文件名。
+怀疑方向：MIUI 13（Android 12）的 QCA6390 固件与 LOS 23.2 qcacld/cnss2 的 WMI/BMI 版本不匹配，
+或冷启动校准在该固件上需要额外的前置条件（cnss-daemon/QMI 服务）。
+
+**调试注意**：不要把 `ON` 写 /dev/wlan 放进开机服务——FW ready 超时后 cnss 会以
+`restart_level = SYSTEM` 触发整机重启，造成开机循环。调试时必须手动触发。
