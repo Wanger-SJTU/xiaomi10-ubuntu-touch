@@ -304,3 +304,53 @@ make O=../workdir/downloads/KERNEL_OBJ LLVM=1 LLVM_IAS=1 -j$(nproc) Image
 **下一步方向**：对比 LOS `kona-perf_defconfig` 为何默认不开 PCIE；检查 PCIe 相关依赖是否还缺
 （PHY、clock、regulator、`CONFIG_PCI_QCOM*`）；用 panic-telnet/pstore 抓挂住时的最后内核日志；
 必要时从 MIUI 内核提取 config 作参照。
+
+### 10.1 WiFi 调试进展（2026-11）
+
+目标：让 QCA6390 WLAN 在 Halium/UT 下工作。已打通到"芯片固件启动"阶段，卡在 FW ready。
+
+关键结论与步骤：
+
+1. **PCIe 控制器**：内核 `CONFIG_PCIE_QCOM=y`（+`CONFIG_PCIEPORTBUS`、`PCIE_DW_HOST`）。
+   开启后设备启动正常（此前以为的"卡在 Mi logo"是启动慢 + 后来发现的 `umi-dsp-init`
+   里的 `/sys/kernel/boot_adsp` 写入阻塞，与 PCIe 无关）。
+   启动后可看到 `0000:01:00.0`（vendor 0x17cb, device 0x1101）。
+   注意：构建时若重新生成 .config，`ARCH=arm64` 必须显式传入，否则 `ARCH_QCOM` 会丢失。
+   主机缺 bison 时可用"假 bison"（已有 `zconf.tab.c`）通过 `make olddefconfig`。
+
+2. **qcacld 必须编译为模块**（`CONFIG_QCA_CLD_WLAN=m`），内置（=y）时其 `module_init`
+   只创建 `/dev/wlan` 设备，不会真正加载驱动；且内置时序下 cnss2 已探测完毕，驱动永远不会被触发。
+   `CONFIG_CNSS2` 保持 `=y`（改成 `=m` 会因 mhi_*/memblock_* 等符号未导出而链接失败）。
+
+3. **固件路径**：内核 `firmware_class.path=/vendor/firmware`，而 QCA6390 固件在
+   `/vendor/firmware_mnt/image/qca6390/`（amss20.bin、bdwlan.e*、m3.bin、Data.msc、regdb*.bin）。
+   需要把该目录暴露为 `/vendor/firmware/qca6390`（/vendor 只读，用 tmpfs + symlink 覆盖
+   `/vendor/firmware`，脚本 `/var/lib/umi/wifi-up.sh`）。
+
+4. **触发驱动加载**：`insmod /var/lib/umi/wlan.ko con_mode=5` 后用
+   `printf "ON\n" > /dev/wlan`（写 `ON`；写 "load" 无效——代码里是 `wlan_on_str[] = "ON"`）。
+   写入后 cnss2 会：上电 → 加载 amss20.bin → MHI/QMI WLFW 连接 → 发 host capability → 等 FW ready。
+
+5. **当前卡点**：`cnss: fatal: Timeout waiting for FW ready indication` →
+   `Driver recovery is triggered with reason: TIMEOUT(3)` →
+   `subsys-restart ... restart_level = SYSTEM` → 芯片被关电重启。
+   日志里同时有 `Calibration done is 0` / `Calibration duration not valid`。
+   怀疑方向：BDF/board data（目录里是 `bdwlan.e01..e25` 分段，驱动可能请求 `bdwlan.bin`）、
+   冷启动校准数据、或固件与内核驱动的版本匹配。
+
+复现命令（设备侧）：
+
+```sh
+# 暴露固件
+mkdir -p /run/fw
+for f in /vendor/firmware/*; do ln -sf "$f" /run/fw/; done
+ln -sfn /vendor/firmware_mnt/image/qca6390 /run/fw/qca6390
+mountpoint -q /vendor/firmware || mount -o bind /run/fw /vendor/firmware
+# 加载驱动并触发
+insmod /var/lib/umi/wlan.ko con_mode=5
+printf 'ON\n' > /dev/wlan
+dmesg | grep -i cnss | tail
+```
+
+构建产物：`out/boot-wifi-mod.img`（PCIe 内核 + qcacld 模块版，51MB Image）、
+`/var/lib/umi/wlan.ko`（strip 后 11MB）。
