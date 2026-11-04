@@ -394,3 +394,37 @@ cnss: PM relax, state: 0x9, count: 0
 
 **调试注意**：不要把 `ON` 写 /dev/wlan 放进开机服务——FW ready 超时后 cnss 会以
 `restart_level = SYSTEM` 触发整机重启，造成开机循环。调试时必须手动触发。
+
+### 10.3 第三轮：内置 vs 模块一致，固件在 host capability 后静默（2026-11）
+
+为排除驱动加载方式的影响，刷回**内置 qcacld** 的内核（`out/boot-wifi.img`）并按 apollo 流程
+（`fs_ready=1` → 等 "Calibration completed successfully" → 写 ON）执行。结果与模块方式**完全一致**：
+
+```
+cnss: QMI WLFW service connected, state: 0x9
+cnss: Sending indication register message
+cnss: Sending host capability message     ← cal_done=0, bdf_support=1, m3_support=1, ddr_range(iova)
+cnss: Calibration done is 0
+cnss: Sending iova starting 0xa0000000 with size 0x10010000
+cnss: PM relax, state: 0x9, count: 0
+（之后永无新事件）
+```
+
+结论：
+- 不是模块/内置的差异；不是 pld 注册问题；indication 注册与 host capability 的 QMI 往返都成功。
+- **固件在收到 host capability 后不再发出任何指示**（既没有 REQUEST_MEM，也没有 CAL_DONE）。
+  dmesg 中连一条 `Posting event:` 都没有，说明是固件侧静默。
+
+版本信息：
+- 本机固件（MIUI 13 / Android 12）：`QC_IMAGE_VERSION_STRING=WLAN.HST.1.0.1.r1-01134-QCAHSTSWPL_SILICONZ-1.454967.3.462323.5`
+  （`amss20.bin`，ELF32 ARM）
+- 我们的驱动来自 **LineageOS 23.2** 内核树（qcacld v5.2.022.12B）；apollo（同芯片、WiFi 已工作）用的是 MIUI 14 固件。
+
+**最可能的原因**：MIUI 13 的旧固件与 LOS 23.2 的 cnss2/qcacld 的 WLFW 协议顺序不一致——
+旧固件可能在 `bdf_support=1` 时**先等 host 下载 BDF**，而驱动是 `mem_ready → BDF`，形成死锁。
+
+下一轮计划（二选一）：
+1. 加内核补丁：在 host capability 之后（mem_ready 之前）就调用
+   `cnss_wlfw_bdf_dnld_send_sync(REGDB)` + `(bdf_type)`（并可能加 M3），打破顺序死锁；
+   需要重编内核（cnss2 是内置，需重链 Image）。
+2. 换用更新的 QCA6390 固件（MIUI 14 / HyperOS for umi）验证版本匹配假设。
