@@ -44,6 +44,8 @@ put "$RT/etc/umi-start-vsm.sh"       /etc/umi-start-vsm.sh       0755
 put "$RT/etc/umi-dsp-init.sh"        /etc/umi-dsp-init.sh        0755
 put "$RT/etc/umi-start-rpc.sh"       /etc/umi-start-rpc.sh       0755
 put "$RT/etc/umi-camera-fix.sh"      /etc/umi-camera-fix.sh      0755
+put "$RT/etc/umi-bypass-charging"    /etc/umi-bypass-charging    0755
+put "$RT/etc/udev/rules.d/75-umi-bypass-charging.rules" /etc/udev/rules.d/75-umi-bypass-charging.rules 0644
 mkdir /var/lib/umi
 put "$RT/var/lib/umi/wifi-up.sh"    /var/lib/umi/wifi-up.sh     0755
 

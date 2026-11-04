@@ -464,3 +464,47 @@ cnss: PM relax, state: 0x9, count: 0
 
 文件：`runtime/var/lib/umi/wifi-up.sh`、`runtime/etc/systemd/system/umi-wlan-on.{service,timer}`。
 （`/var/lib/umi/wlan.ko` 仅在模块方式下需要，内置内核不需要。）
+
+## 11. 电池旁路 / USB 直供电（battery bypass）
+
+目标：**USB 供电时 bypass 电池**——系统由 USB/适配器供电，电池既不充电也不放电，
+并且电量/健康状态被伪造为"满电/在位/健康"，避免 upower/repowerd/lomiri 因低电量或缺电池而关机。
+
+### 内核补丁 `kernel-patches/0019-...`
+
+新增一个可写的电源属性 `bypass_charging`（`/sys/class/power_supply/battery/bypass_charging`）：
+
+- `include/linux/power_supply.h` + `drivers/power/supply/power_supply_sysfs.c`：
+  在枚举/属性表**末尾**追加 `POWER_SUPPLY_PROP_BYPASS_CHARGING` / `POWER_SUPPLY_ATTR(bypass_charging)`。
+- `drivers/power/supply/qcom/smb5-lib.{c,h}`：
+  `struct smb_charger` 增加 `bool bypass_charging`；新增 `BYPASS_CHARGING_VOTER`；
+  set 时 `vote(chg->chg_disable_votable, BYPASS_CHARGING_VOTER, on, 0)`
+  （`chg_disable_votable` 是 SMB5 真正关充电的开关，会写 `CHARGING_ENABLE_CMD_BIT`）。
+  同时 `batt_present`/`batt_capacity`/`batt_status`/`batt_health` 在 bypass 下返回
+  1 / 100 / `NOT_CHARGING` / `GOOD`。
+- `drivers/power/supply/qcom/qpnp-smb5.c`：属性加入 `smb5_batt_props[]`、
+  get/set 分支、以及 `smb5_batt_prop_is_writeable()`（否则属性是 0444 只读，写会 EACCES）。
+
+注意：SMB5 的 `battery_charging_enabled`（我们最初试的节点）只是压 USB 输入电流 ICL，
+反而会让系统吃电池；真正的"停充、系统仍由 VBUS 供"要用 `chg_disable_votable`。
+`charge_control_limit`/`constant_charge_current` 在该机型上都是只读。
+
+### 用户态（`runtime/etc/`）
+
+- `/etc/umi-bypass-charging`：`on|off|status` 三个动作，读写上面的属性。
+  （放 `/etc` 而不是 `/usr/local`：`/usr` 启动后只读。）
+- `/etc/udev/rules.d/75-umi-bypass-charging.rules`：USB 电源 `online=1` 时自动 `on`，
+  `online=0` 时自动 `off`。实测 `udevadm trigger --subsystem-match=power_supply` 可触发。
+
+### 实测结果（umi，电池在位）
+
+```
+写 1 前: status=Charging   cap=97  current_now=-536620uA
+写 1 后: status=Not charging cap=100 current_now=2929uA   present=1 health=Good
+写 0 后: status=Charging   current_now=-557616uA
+dmesg: "Battery bypass enabled" / "Battery bypass disabled"
+```
+系统在 bypass 下持续运行（uptime 正常、SSH/WiFi 均正常）。
+
+**待验证**：物理拆除电池后能否开机取决于 bootloader（ABL），属固件行为，本次未测试；
+若 ABL 允许无电池开机，本补丁的"伪电池"能保证系统不再因缺电池关机。

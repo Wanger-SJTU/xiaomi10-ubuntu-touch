@@ -1,0 +1,22 @@
+#!/bin/sh
+# umi: toggle "battery bypass" mode.
+#
+# When enabled (and USB/DC power is present) the smb5 charger is disabled, so
+# the phone runs from the USB power input while the battery is neither charged
+# nor discharged. Battery properties are reported as present/full/healthy so
+# userspace never shuts the device down because of a missing/empty battery.
+#
+# Usage: umi-bypass-charging [on|off|status]
+B=/sys/class/power_supply/battery/bypass_charging
+
+case "$1" in
+    on|1)
+        [ -w "$B" ] && echo 1 > "$B"
+        ;;
+    off|0)
+        [ -w "$B" ] && echo 0 > "$B"
+        ;;
+    *)
+        [ -r "$B" ] && cat "$B"
+        ;;
+esac

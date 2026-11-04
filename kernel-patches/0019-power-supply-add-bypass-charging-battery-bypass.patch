@@ -1,0 +1,198 @@
+diff --git a/drivers/power/supply/power_supply_sysfs.c b/drivers/power/supply/power_supply_sysfs.c
+index a56d42382..7b346e31b 100644
+--- a/drivers/power/supply/power_supply_sysfs.c
++++ b/drivers/power/supply/power_supply_sysfs.c
+@@ -742,6 +742,7 @@ static struct device_attribute power_supply_attrs[] = {
+ 	// Factory high temperature to intercept
+ 	POWER_SUPPLY_ATTR(temp_max_fac),
+ 	POWER_SUPPLY_ATTR(time_ot),
++	POWER_SUPPLY_ATTR(bypass_charging),
+ };
+ 
+ static struct attribute *
+diff --git a/drivers/power/supply/qcom/qpnp-smb5.c b/drivers/power/supply/qcom/qpnp-smb5.c
+index d1c40a360..d5bb519e1 100644
+--- a/drivers/power/supply/qcom/qpnp-smb5.c
++++ b/drivers/power/supply/qcom/qpnp-smb5.c
+@@ -2990,6 +2990,7 @@ static enum power_supply_property smb5_batt_props[] = {
+ 	POWER_SUPPLY_PROP_PRESENT,
+ 	POWER_SUPPLY_PROP_CHARGE_TYPE,
+ 	POWER_SUPPLY_PROP_CAPACITY,
++	POWER_SUPPLY_PROP_BYPASS_CHARGING,
+ 	POWER_SUPPLY_PROP_CHARGER_TEMP,
+ 	POWER_SUPPLY_PROP_CHARGER_TEMP_MAX,
+ 	POWER_SUPPLY_PROP_INPUT_CURRENT_LIMITED,
+@@ -3069,6 +3070,9 @@ static int smb5_batt_get_prop(struct power_supply *psy,
+ 	case POWER_SUPPLY_PROP_CAPACITY:
+ 		rc = smblib_get_prop_batt_capacity(chg, val);
+ 		break;
++	case POWER_SUPPLY_PROP_BYPASS_CHARGING:
++		rc = smblib_get_prop_bypass_charging(chg, val);
++		break;
+ 	case POWER_SUPPLY_PROP_CHARGE_CONTROL_LIMIT:
+ 		rc = smblib_get_prop_system_temp_level(chg, val);
+ 		break;
+@@ -3256,6 +3260,9 @@ static int smb5_batt_set_prop(struct power_supply *psy,
+ 	case POWER_SUPPLY_PROP_CAPACITY:
+ 		rc = smblib_set_prop_batt_capacity(chg, val);
+ 		break;
++	case POWER_SUPPLY_PROP_BYPASS_CHARGING:
++		rc = smblib_set_prop_bypass_charging(chg, val);
++		break;
+ 	case POWER_SUPPLY_PROP_PARALLEL_DISABLE:
+ 		vote(chg->pl_disable_votable, USER_VOTER, (bool)val->intval, 0);
+ 		break;
+@@ -3382,6 +3389,7 @@ static int smb5_batt_prop_is_writeable(struct power_supply *psy,
+ 	case POWER_SUPPLY_PROP_WARM_FAKE_CHARGING:
+ 	case POWER_SUPPLY_PROP_RECHARGE_VBAT:
+ 	case POWER_SUPPLY_PROP_NIGHT_CHARGING:
++	case POWER_SUPPLY_PROP_BYPASS_CHARGING:
+ 		return 1;
+ 	default:
+ 		break;
+diff --git a/drivers/power/supply/qcom/smb5-lib.c b/drivers/power/supply/qcom/smb5-lib.c
+index 6372dab5d..de6da3515 100644
+--- a/drivers/power/supply/qcom/smb5-lib.c
++++ b/drivers/power/supply/qcom/smb5-lib.c
+@@ -2413,6 +2413,14 @@ int smblib_get_prop_batt_present(struct smb_charger *chg,
+ 	int rc;
+ 	u8 stat;
+ 
++	/* Halium/UT battery bypass: pretend the battery is present so the
++	 * system keeps running from USB power on a batteryless setup.
++	 */
++	if (chg->bypass_charging) {
++		val->intval = 1;
++		return 0;
++	}
++
+ 	rc = smblib_read(chg, BATIF_BASE + INT_RT_STS_OFFSET, &stat);
+ 	if (rc < 0) {
+ 		smblib_err(chg, "Couldn't read BATIF_INT_RT_STS rc=%d\n", rc);
+@@ -2493,6 +2501,11 @@ int smblib_get_prop_batt_capacity(struct smb_charger *chg,
+ {
+ 	int rc = -EINVAL;
+ 
++	if (chg->bypass_charging) {
++		val->intval = 100;
++		return 0;
++	}
++
+ 	if (chg->fake_capacity >= 0 && chg->fake_capacity <= 100) {
+ 		val->intval = chg->fake_capacity;
+ 		return 0;
+@@ -2580,6 +2593,13 @@ int smblib_get_prop_batt_status(struct smb_charger *chg,
+ 	int icl = 0;
+ 	if (chg->is_qc_class_a && !chg->qc3_raise_done)
+ 		icl = MAIN_ICL_MIN;
++
++	/* Halium/UT battery bypass: charging is disabled, powered from USB */
++	if (chg->bypass_charging) {
++		val->intval = POWER_SUPPLY_STATUS_NOT_CHARGING;
++		return 0;
++	}
++
+ 	if (chg->fake_chg_status_on_debug_batt) {
+ 		rc = smblib_get_prop_from_bms(chg,
+ 				POWER_SUPPLY_PROP_DEBUG_BATTERY, &pval);
+@@ -2870,6 +2890,12 @@ int smblib_get_prop_batt_health(struct smb_charger *chg,
+ 	u8 stat;
+ 	int over_voltage_thr_uv;
+ 
++	/* Halium/UT battery bypass: report a healthy battery */
++	if (chg->bypass_charging) {
++		val->intval = POWER_SUPPLY_HEALTH_GOOD;
++		return 0;
++	}
++
+ 	rc = smblib_read(chg, BATTERY_CHARGER_STATUS_2_REG, &stat);
+ 	if (rc < 0) {
+ 		smblib_err(chg, "Couldn't read BATTERY_CHARGER_STATUS_2 rc=%d\n",
+@@ -3216,6 +3242,42 @@ int smblib_set_prop_batt_capacity(struct smb_charger *chg,
+ 	return 0;
+ }
+ 
++/*
++ * Halium/UT: battery bypass ("direct USB power").
++ *
++ * When enabled the main charger is disabled, so the battery is neither
++ * charged nor discharged - the system runs from the USB/DC input. The
++ * battery properties are faked (present/full/healthy) so that userspace
++ * (upower, repowerd, lomiri) never shuts the device down because of a
++ * missing or empty battery.
++ */
++int smblib_get_prop_bypass_charging(struct smb_charger *chg,
++				    union power_supply_propval *val)
++{
++	val->intval = chg->bypass_charging;
++	return 0;
++}
++
++int smblib_set_prop_bypass_charging(struct smb_charger *chg,
++				    const union power_supply_propval *val)
++{
++	int rc;
++
++	chg->bypass_charging = !!val->intval;
++	rc = vote(chg->chg_disable_votable, BYPASS_CHARGING_VOTER,
++		  chg->bypass_charging, 0);
++	if (rc < 0)
++		smblib_err(chg, "Couldn't %s battery bypass rc=%d\n",
++			   chg->bypass_charging ? "enable" : "disable", rc);
++	else
++		pr_info("Battery bypass %s\n",
++			chg->bypass_charging ? "enabled" : "disabled");
++
++	power_supply_changed(chg->batt_psy);
++
++	return rc;
++}
++
+ int smblib_set_prop_batt_status(struct smb_charger *chg,
+ 				  const union power_supply_propval *val)
+ {
+diff --git a/drivers/power/supply/qcom/smb5-lib.h b/drivers/power/supply/qcom/smb5-lib.h
+index bfa2203b1..f7d89d076 100644
+--- a/drivers/power/supply/qcom/smb5-lib.h
++++ b/drivers/power/supply/qcom/smb5-lib.h
+@@ -47,6 +47,7 @@ enum print_reason {
+ #define BOOST_BACK_VOTER		"BOOST_BACK_VOTER"
+ #define MICRO_USB_VOTER			"MICRO_USB_VOTER"
+ #define DEBUG_BOARD_VOTER		"DEBUG_BOARD_VOTER"
++#define BYPASS_CHARGING_VOTER		"BYPASS_CHARGING_VOTER"
+ #define PD_SUSPEND_SUPPORTED_VOTER	"PD_SUSPEND_SUPPORTED_VOTER"
+ #define PL_DELAY_VOTER			"PL_DELAY_VOTER"
+ #define CTM_VOTER			"CTM_VOTER"
+@@ -784,6 +785,8 @@ struct smb_charger {
+ 	bool			otg_en;
+ 	bool			suspend_input_on_debug_batt;
+ 	bool			fake_chg_status_on_debug_batt;
++	/* Halium/UT: run from USB power with the battery bypassed */
++	bool			bypass_charging;
+ 	int			default_icl_ua;
+ 	int			otg_cl_ua;
+ 	bool			uusb_apsd_rerun_done;
+@@ -1077,6 +1080,10 @@ int smblib_get_batt_current_now(struct smb_charger *chg,
+ 					union power_supply_propval *val);
+ int smblib_get_prop_batt_health(struct smb_charger *chg,
+ 				union power_supply_propval *val);
++int smblib_get_prop_bypass_charging(struct smb_charger *chg,
++				union power_supply_propval *val);
++int smblib_set_prop_bypass_charging(struct smb_charger *chg,
++				const union power_supply_propval *val);
+ int smblib_get_prop_system_temp_level(struct smb_charger *chg,
+ 				union power_supply_propval *val);
+ int smblib_get_prop_system_temp_level_max(struct smb_charger *chg,
+diff --git a/include/linux/power_supply.h b/include/linux/power_supply.h
+index 6f508a759..cd1ebf6fc 100644
+--- a/include/linux/power_supply.h
++++ b/include/linux/power_supply.h
+@@ -516,6 +516,8 @@ enum power_supply_property {
+ 	// high temperature to intercept
+ 	POWER_SUPPLY_PROP_TEMP_MAX_FAC,
+ 	POWER_SUPPLY_PROP_TIME_OT,
++	/* Halium/UT: run from USB power, bypass the battery (stop charging) */
++	POWER_SUPPLY_PROP_BYPASS_CHARGING,
+ };
+ 
+ enum power_supply_type {
