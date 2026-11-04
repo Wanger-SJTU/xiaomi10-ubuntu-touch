@@ -1,0 +1,10 @@
+[Unit]
+Description=umi: run Wi-Fi bring-up after boot
+
+[Timer]
+OnBootSec=120
+OnUnitActiveSec=0
+AccuracySec=1s
+
+[Install]
+WantedBy=timers.target

@@ -1,0 +1,11 @@
+[Unit]
+Description=umi: power on QCA6390 Wi-Fi (create wlan0)
+After=lxc-android-config.service
+Before=NetworkManager.service
+ConditionPathExists=/dev/wlan
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+TimeoutStartSec=240
+ExecStart=/var/lib/umi/wifi-up.sh

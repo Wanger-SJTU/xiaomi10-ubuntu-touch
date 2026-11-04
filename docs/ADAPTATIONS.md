@@ -428,3 +428,39 @@ cnss: PM relax, state: 0x9, count: 0
    `cnss_wlfw_bdf_dnld_send_sync(REGDB)` + `(bdf_type)`（并可能加 M3），打破顺序死锁；
    需要重编内核（cnss2 是内置，需重链 Image）。
 2. 换用更新的 QCA6390 固件（MIUI 14 / HyperOS for umi）验证版本匹配假设。
+
+### 10.4 WiFi 已可用（2026-11，最终方案）
+
+**结果**：`wlan0` 正常创建，NetworkManager 接管，可扫描、连接 5GHz WPA2、拿到 IP、DNS 与外网 ping 均正常
+（实测连 `freedom-5G`，freq 5745，信号 -24 dBm，外网 RTT ~6ms）。
+
+完整可用的启动流程由四部分组成（对应文件已放进 `runtime/`）：
+
+1. **内核**（`out/boot-wifi.img`）：`CONFIG_PCIE_QCOM=y` + **内置** `CONFIG_CNSS2=y` / `CONFIG_QCA_CLD_WLAN=y`。
+   驱动模块方式亦可，但内置更接近 apollo 的已验证配置；`CNSS2=m` 不可行（mhi_* 等符号未导出）。
+2. **固件路径**（`/var/lib/umi/wifi-up.sh`）：内核 `firmware_class.path=/vendor/firmware`，而
+   `/vendor/firmware/wlan` 在 MIUI vendor 上是**自指向坏符号链接**。用 tmpfs 覆盖 `/vendor/firmware`：
+   ```sh
+   mkdir -p /run/fw
+   for f in /vendor/firmware/*; do ln -sf "$f" /run/fw/; done
+   rm -f /run/fw/wlan
+   mkdir -p /run/fw/wlan/qca_cld
+   ln -sfn /vendor/etc/wifi/qca6390 /run/fw/wlan/qca_cld/qca6390   # 关键
+   ln -sfn /vendor/firmware_mnt/image/qca6390 /run/fw/qca6390
+   mount -o bind /run/fw /vendor/firmware
+   ```
+   这样 `wlan/qca_cld/qca6390/WCNSS_qcom_cfg.ini` 才可读；否则 probe 报
+   `Failed to parse cfg wlan/qca_cld/qca6390/WCNSS_qcom_cfg.ini`。
+3. **cnss-daemon**（Android 容器内）：`/vendor/bin/cnss-daemon -n -l` 必须运行，
+   否则固件在 host capability 之后**静默**（不发 REQUEST_MEM / CAL_DONE），冷启动校准永远不完成。
+4. **冷启动校准 + 触发**：
+   `echo 1 > /sys/bus/platform/devices/b0000000.qcom,cnss-qca6390/fs_ready` → 等 dmesg
+   `Calibration completed successfully`（首次会写校准结果，之后 `Calibration done is 1`）→
+   `printf "ON\n" > /dev/wlan` 加载 WLAN 驱动（mission 模式）→ `wlan0` 出现。
+
+**开机集成**：不能把上述流程放进阻塞启动的 oneshot 服务（时序不对会卡启动/触发 SYSTEM 重启）。
+改用 **timer**：`umi-wlan-on.timer`（`OnBootSec=120`）触发 `umi-wlan-on.service` 跑 `wifi-up.sh`。
+实测重启后约 2 分钟 wlan0 自动出现，NetworkManager 自动连接已保存的网络。
+
+文件：`runtime/var/lib/umi/wifi-up.sh`、`runtime/etc/systemd/system/umi-wlan-on.{service,timer}`。
+（`/var/lib/umi/wlan.ko` 仅在模块方式下需要，内置内核不需要。）
